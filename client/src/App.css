@@ -1,0 +1,629 @@
+/* --- Google Font Import --- */
+@import url('https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700&display=swap');
+
+/* --- CSS Variables for Adobe-Inspired Theme --- */
+:root {
+  --background: #121212;
+  --background-panel: #1A1A1A;
+  --background-panel-transparent: rgba(26, 26, 26, 0.7);
+  --accent-red: #FA0F00;
+  --accent-green: #28a745;
+  --accent-purple: #8338EC;
+  --text-primary: #F5F5F5;
+  --text-secondary: #8E8E8E;
+  --border-color: #2D2D2D;
+  --shadow-color: rgba(0, 0, 0, 0.5);
+}
+
+/* --- General App Styling --- */
+body {
+  background-color: var(--background);
+  background-image: url('https://www.toptal.com/designers/subtlepatterns/uploads/double-bubble-outline.png');
+  background-attachment: fixed;
+}
+
+.App {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+  font-family: 'Sora', sans-serif;
+  color: var(--text-primary);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  background-color: rgba(18, 18, 18, 0.85);
+  overflow: hidden;
+}
+
+/* --- Styled Scrollbars --- */
+::-webkit-scrollbar {
+  width: 8px;
+}
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+::-webkit-scrollbar-thumb {
+  background: #444;
+  border-radius: 4px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #666;
+}
+
+/* --- Header --- */
+.App-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 24px;
+  background-color: var(--background-panel-transparent);
+  border-bottom: 1px solid var(--border-color);
+  flex-shrink: 0;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  color: var(--accent-red);
+}
+
+.logo h1 {
+  font-size: 1.25em;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.file-upload-label {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--accent-red);
+  color: white;
+  padding: 10px 18px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.2s ease;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  text-shadow: 0 0 8px rgba(255, 255, 255, 0.5);
+}
+
+.file-upload-label:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(250, 15, 0, 0.4);
+}
+
+#file-upload {
+  display: none;
+}
+
+/* --- Main Content Area --- */
+.main-content {
+  display: grid;
+  grid-template-columns: 280px 1fr 380px;
+  flex-grow: 1;
+  overflow: hidden;
+}
+
+/* --- Sidebar (Document Library) --- */
+.sidebar {
+  background-color: var(--background-panel-transparent);
+  border-right: 1px solid var(--border-color);
+  padding: 20px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+}
+
+.sidebar h2 {
+  font-size: 1.1em;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-top: 0;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--border-color);
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.document-list {
+  list-style: none;
+  padding: 0;
+  margin-top: 10px;
+}
+
+.document-item {
+  padding: 12px 15px;
+  cursor: pointer;
+  border-radius: 6px;
+  margin-bottom: 8px;
+  font-size: 0.9em;
+  color: var(--text-secondary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  transition: all 0.2s ease;
+  border-left: 3px solid transparent;
+}
+
+.document-item:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+  color: var(--text-primary);
+}
+
+.document-item.active {
+  background-color: rgba(250, 15, 0, 0.1);
+  color: var(--accent-red);
+  font-weight: 600;
+  border-left: 3px solid var(--accent-red);
+}
+
+.upload-status {
+  margin-top: auto;
+  padding: 10px;
+  font-size: 0.8em;
+  color: var(--text-secondary);
+  text-align: center;
+}
+
+/* --- Viewer Container --- */
+.viewer-container {
+  display: flex;
+  flex-direction: column;
+  padding: 24px;
+  overflow-y: auto;
+}
+
+.pdf-display-area {
+  display: flex;
+  justify-content: center;
+}
+
+.react-pdf__Page {
+  margin-bottom: 24px;
+}
+
+.react-pdf__Page__canvas {
+  border-radius: 8px;
+  box-shadow: 0 10px 30px var(--shadow-color);
+}
+
+.placeholder {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100%;
+    color: var(--text-secondary);
+    text-align: center;
+}
+.placeholder svg {
+    width: 64px;
+    height: 64px;
+    margin-bottom: 16px;
+    color: var(--border-color);
+}
+
+/* --- Right Panel (Vertical Tabs + Content) --- */
+.right-panel {
+  background-color: var(--background-panel-transparent);
+  border-left: 1px solid var(--border-color);
+  display: grid;
+  grid-template-columns: 60px 1fr; /* Icon bar and content */
+  overflow: hidden;
+}
+
+.vertical-tabs {
+  display: flex;
+  flex-direction: column;
+  padding: 10px;
+  gap: 10px;
+  border-right: 1px solid var(--border-color);
+}
+
+.tab-button {
+  padding: 15px;
+  background-color: transparent;
+  border: none;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  border-radius: 8px;
+  position: relative;
+}
+
+.tab-button:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+  color: var(--text-primary);
+}
+
+.tab-button.active {
+  background-color: rgba(250, 15, 0, 0.1);
+  color: var(--accent-red);
+}
+
+/* --- IMPORTANT: panel-content MUST be full-height flex column to allow inner panels to pin bottom elements --- */
+.panel-content {
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    overflow: hidden; /* ensure internal scroll areas control scrolling */
+}
+
+.insights-panel, .chat-panel, .quiz-panel, .presentation-panel {
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+  height: 100%;
+}
+
+.chat-panel {
+    padding: 0; /* Chat panel has its own padding */
+}
+
+.insights-panel, .quiz-panel, .presentation-panel {
+    padding: 20px;
+}
+
+.insights-panel h2, .quiz-panel h2, .presentation-panel h2 {
+  font-size: 1.1em;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-top: 0;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--border-color);
+  flex-shrink: 0;
+}
+
+.insights-button, .podcast-button, .quiz-button {
+  width: 100%;
+  padding: 12px;
+  font-size: 0.9em;
+  font-weight: 600;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  cursor: pointer;
+  margin-bottom: 15px;
+  transition: all 0.3s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.insights-button { background-color: var(--accent-green); }
+.insights-button:hover { background-color: #218838; }
+.podcast-button { background-color: var(--accent-purple); }
+.podcast-button:hover { background-color: #6a2ab2; }
+.quiz-button { background: var(--accent-red); }
+.quiz-button:hover { background-color: #d80d00; }
+
+.insights-button:disabled, .podcast-button:disabled, .quiz-button:disabled {
+  background-color: #444;
+  cursor: not-allowed;
+  opacity: 0.7;
+}
+
+.insights-container {
+  margin-top: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.insight-card {
+  padding: 18px;
+  border-radius: 8px;
+  background-color: var(--background);
+  border: 1px solid var(--border-color);
+}
+
+.insight-title {
+  font-size: 0.95em;
+  font-weight: 600;
+  margin: 0 0 8px 0;
+  color: var(--text-primary);
+  display: flex;
+  align-items: center;
+}
+.insight-icon { margin-right: 8px; }
+
+.insight-content {
+  font-size: 0.9em;
+  color: var(--text-secondary);
+  margin: 0;
+  line-height: 1.5;
+}
+
+.section-divider {
+  border: 0;
+  height: 1px;
+  background-color: var(--border-color);
+  margin: 25px 0;
+  flex-shrink: 0;
+}
+
+.recommendation-card {
+  background-color: var(--background);
+  border-left: 4px solid var(--accent-red);
+  padding: 15px;
+  border-radius: 4px;
+  margin-bottom: 12px;
+}
+
+.snippet { font-style: italic; color: var(--text-secondary); margin: 0 0 10px 0; }
+.source { font-size: 0.8em; color: #888; text-align: right; margin: 0; }
+.placeholder-rec { font-size: 0.9em; color: var(--text-secondary); text-align: center; padding: 20px; }
+.audio-player { width: 100%; margin-top: 15px; }
+
+.source-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: 10px;
+}
+.goto-button {
+    background: transparent;
+    border: 1px solid var(--accent-red);
+    color: var(--accent-red);
+    padding: 5px 10px;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 0.8em;
+    font-weight: 600;
+    transition: all 0.2s ease;
+}
+.goto-button:hover {
+    background-color: var(--accent-red);
+    color: white;
+}
+
+/* --- Chat Panel --- */
+.chat-messages {
+  flex-grow: 1;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+  padding: 20px;
+}
+
+.chat-bubble {
+  padding: 12px 18px;
+  border-radius: 18px;
+  max-width: 85%;
+  line-height: 1.5;
+  font-size: 0.9em;
+}
+
+.chat-bubble.user {
+  background-color: var(--accent-red);
+  color: white;
+  align-self: flex-end;
+  border-bottom-right-radius: 4px;
+}
+
+.chat-bubble.ai {
+  background-color: #2b2b2b;
+  color: var(--text-primary);
+  align-self: flex-start;
+  border-bottom-left-radius: 4px;
+}
+
+.chat-input-form {
+  display: flex;
+  padding: 20px;
+  border-top: 1px solid var(--border-color);
+}
+
+.chat-input-form input {
+  flex-grow: 1;
+  border: 1px solid var(--border-color);
+  background-color: var(--background);
+  color: var(--text-primary);
+  padding: 12px 15px;
+  border-radius: 8px;
+  font-size: 0.9em;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.chat-input-form input:focus { border-color: var(--accent-red); }
+
+.chat-input-form button {
+  margin-left: 10px;
+  background-color: var(--accent-red);
+  border: none;
+  border-radius: 8px;
+  padding: 0 15px;
+  cursor: pointer;
+  color: white;
+  transition: background-color 0.2s;
+}
+
+.chat-input-form button:hover { background-color: #d80d00; }
+.chat-input-form button:disabled { background-color: #444; cursor: not-allowed; opacity: 0.7; }
+
+/* --- Quiz Panel --- */
+.quiz-container { display: flex; flex-direction: column; gap: 20px; }
+.quiz-header h3 { font-size: 1em; color: var(--text-secondary); margin: 0 0 10px; }
+.quiz-question { font-size: 1.1em; font-weight: 600; line-height: 1.5; }
+.quiz-options { display: flex; flex-direction: column; gap: 10px; }
+.quiz-option { width: 100%; padding: 12px; font-size: 0.9em; font-weight: 500; color: var(--text-primary); background-color: var(--background); border: 1px solid var(--border-color); border-radius: 8px; cursor: pointer; text-align: left; transition: all 0.2s ease; }
+.quiz-option:hover { border-color: var(--accent-red); background-color: rgba(250, 15, 0, 0.1); }
+.quiz-option.correct { border-color: var(--accent-green); background-color: rgba(40, 167, 69, 0.1); font-weight: 700; }
+.quiz-option.incorrect { border-color: var(--accent-red); background-color: rgba(250, 15, 0, 0.1); opacity: 0.7; }
+.quiz-results { text-align: center; padding: 40px 20px; }
+.quiz-results h2 { font-size: 1.5em; margin-bottom: 10px; }
+.quiz-results .score { font-size: 1.2em; color: var(--accent-red); font-weight: 700; margin-bottom: 30px; }
+
+/* --- Presentation Panel --- */
+.presentation-container { display: flex; flex-direction: column; height: 100%; }
+.slide { flex-grow: 1; background-color: var(--background); border: 1px solid var(--border-color); border-radius: 8px; padding: 25px; }
+.slide-title { font-size: 1.4em; font-weight: 700; color: var(--accent-red); margin: 0 0 20px; }
+.slide-content { list-style-position: inside; padding-left: 10px; }
+.slide-content li { font-size: 1em; line-height: 1.8; color: var(--text-primary); margin-bottom: 12px; }
+.slide-nav { display: flex; justify-content: space-between; align-items: center; padding-top: 20px; flex-shrink: 0; }
+.slide-nav button { background: var(--background-lighter); border: 1px solid var(--border-color); color: var(--text-primary); padding: 8px 15px; border-radius: 5px; cursor: pointer; transition: all 0.2s ease; }
+.slide-nav button:hover { background-color: var(--accent-red); color: white; }
+.slide-nav button:disabled { background-color: #333; cursor: not-allowed; opacity: 0.5; }
+
+
+/* --- Typing Indicator --- */
+.typing-indicator span { height: 8px; width: 8px; background-color: var(--text-secondary); border-radius: 50%; display: inline-block; animation: bounce 1.4s infinite ease-in-out both; }
+.typing-indicator span:nth-of-type(1) { animation-delay: -0.32s; }
+.typing-indicator span:nth-of-type(2) { animation-delay: -0.16s; }
+
+@keyframes bounce { 0%, 80%, 100% { transform: scale(0); } 40% { transform: scale(1.0); } }
+
+/* --- Loaders --- */
+.loader { border: 5px solid #333; border-top: 5px solid var(--accent-red); border-radius: 50%; width: 50px; height: 50px; animation: spin 1s linear infinite; margin: 50px auto; }
+.loader-small { border: 3px solid #444; border-top: 3px solid var(--accent-red); border-radius: 50%; width: 24px; height: 24px; animation: spin 1s linear infinite; margin: 10px auto; }
+
+@keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+
+/* --- Landing Page --- */
+.landing-page {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    text-align: center;
+    color: white;
+}
+.landing-content {
+    max-width: 600px;
+    padding: 40px;
+    background: rgba(0,0,0,0.5);
+    border-radius: 15px;
+    backdrop-filter: blur(10px);
+}
+.landing-content h1 {
+    font-size: 3em;
+    font-weight: 700;
+    margin-bottom: 20px;
+    text-shadow: 0 0 15px var(--accent-red);
+}
+.landing-content p {
+    font-size: 1.1em;
+    color: var(--text-secondary);
+    margin-bottom: 40px;
+    line-height: 1.6;
+}
+.launch-button {
+    background: var(--accent-red);
+    color: white;
+    padding: 15px 30px;
+    border-radius: 8px;
+    cursor: pointer;
+    font-weight: 600;
+    font-size: 1.2em;
+    transition: all 0.3s ease;
+    border: none;
+    text-shadow: 0 0 8px rgba(255, 255, 255, 0.5);
+}
+.launch-button:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(250, 15, 0, 0.5);
+}
+
+/* ============================
+   TRANSLATE PANEL SPECIFIC STYLES
+   (ensures translate buttons are always visible)
+   ============================ */
+
+/* container for the translate panel inside the right column */
+.translate-panel {
+  display: flex;
+  flex-direction: column;
+  height: 100%;               /* occupy all available height of panel-content */
+  padding: 16px;
+  gap: 8px;
+  box-sizing: border-box;
+  overflow: hidden;           /* important: internal areas handle scrolling */
+}
+
+/* selected text box (top) */
+.translate-box.selected {
+  background: rgba(255,255,255,0.02);
+  border: 1px solid var(--border-color);
+  padding: 12px;
+  border-radius: 8px;
+  font-size: 0.9em;
+  color: var(--text-primary);
+  max-height: 120px;
+  overflow: auto;
+}
+
+/* main scrollable translations area - THIS is the only area that scrolls */
+.translate-scroll {
+  flex: 1 1 auto;           /* expand to take remaining height in translate-panel */
+  min-height: 0;            /* allow flexbox to correctly clip children */
+  overflow-y: auto;         /* scroll only this area */
+  padding: 8px;
+  background: linear-gradient(180deg, rgba(255,255,255,0.01), transparent);
+  border-radius: 8px;
+  border: 1px solid rgba(255,255,255,0.03);
+}
+
+/* individual translation box inside the scroller */
+.translate-box {
+  background: transparent;
+  padding: 10px;
+  border-radius: 6px;
+}
+
+/* current translation highlighted */
+.translate-box.current {
+  border-left: 3px solid var(--accent-red);
+  padding-left: 12px;
+}
+
+/* bottom navigation row (pinned) */
+.translate-nav {
+  display: flex;
+  gap: 8px;
+  margin-top: auto;   /* pushes this row to bottom of translate-panel */
+  align-items: center;
+  justify-content: space-between;
+  padding-top: 8px;
+  border-top: 1px solid rgba(255,255,255,0.03);
+}
+
+/* keep buttons same appearance as other quiz/insight buttons, but allow them to shrink */
+.translate-nav .quiz-button {
+  flex: 1;
+  padding: 10px;
+  font-size: 0.9em;
+  border-radius: 8px;
+  background: var(--accent-red);
+  color: #fff;
+  border: none;
+}
+.translate-nav .quiz-button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  background: #444;
+}
+
+/* small helper to show translation count near Translate action (keeps layout tidy) */
+.translate-panel .translation-count {
+  color: var(--text-secondary);
+  font-size: 13px;
+}
+
+/* Ensure long lines wrap */
+.translate-panel p { word-break: break-word; white-space: pre-wrap; }
+
+/* small responsiveness: right panel becomes narrower on small screens */
+@media (max-width: 1100px) {
+  .main-content { grid-template-columns: 220px 1fr 320px; }
+}
+
+@media (max-width: 800px) {
+  .main-content { grid-template-columns: 1fr; }
+  .right-panel { display: none; } /* hide right panel on very small screens */
+}
