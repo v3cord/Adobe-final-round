@@ -54,25 +54,31 @@ In today’s age of **information overload**, professionals and researchers are 
 
 ```bash
 ADOBE-FINAL-ROUND-MAIN/
-│── client/              # Frontend (React.js)
-│   ├── public/
-│   └── src/
-│   ├── package.json
-│   ├── package-lock.json
-│   └── README.md
 │
-│── server/              # Backend (Node.js + Express)
-│   ├── server.js
-│   ├── package.json
-│   └── package-lock.json
+├── client/ # React frontend
+│ ├── public/ # Public assets (HTML, images, icons, etc.)
+│ ├── src/ # React source code
+│ │ ├── App.css # Styling for App component
+│ │ ├── App.js # Main React component
+│ │ ├── index.css # Global CSS
+│ │ └── index.js # React entry point
+│ ├── package.json # Client dependencies and scripts
+│ └── package-lock.json # Dependency lock file
 │
-│── Dockerfile           # Container setup
-│── README.md            # Project documentation
-│── .gitignore
-5. Setup & Running (Dockerized)
-🔧 Prerequisites
+├── server/ # Node.js backend
+│ ├── server.js # Express server setup
+│ ├── package.json # Server dependencies and scripts
+│ └── package-lock.json # Dependency lock file
+│
+├── .gitignore # Git ignored files
+├── Dockerfile # Docker setup for containerization
+├── README.md # Project documentation
+└── package.json # Root package file (if managing workspaces / common deps)
 ```
-## Install Docker Desktop
+## 5. Setup & Running (Dockerized)
+🔧 Prerequisites
+
+### Install Docker Desktop
 
 ### API Keys:
 
