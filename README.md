@@ -99,6 +99,7 @@ docker run -e GEMINI_API_KEY="YOUR_GEMINI_API_KEY_HERE" -e AZURE_TTS_KEY="YOUR_A
 
 👉 Open browser at:
 http://localhost:8080
+
 double click "Get Started" on the Landing page.
 
 ## 🔑 6. Environment Variables
