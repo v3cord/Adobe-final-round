@@ -10,7 +10,7 @@ This application is more than just a PDF reader; it's a comprehensive suite of t
 Core Document Handling
 📚 Bulk PDF Upload & Library: Upload multiple PDFs at once to create a personal, searchable document library. New uploads are seamlessly added to your existing collection.
 
-📄 High-Fidelity Viewer: A smooth, responsive PDF viewer with page navigation, scrolling.
+📄 High-Fidelity Viewer: A smooth, responsive PDF viewer with page navigation, scrolling, and zoom in/out functionality.
 
 AI-Powered Analysis & Interaction
 🔗 Connect the Dots: When you select text in one document, the engine instantly finds and displays up to 5 related sections and snippets from your entire library, helping you discover hidden connections.

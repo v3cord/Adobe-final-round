@@ -1,5 +1,3 @@
-// server.js — FINAL VERSION with All Features Restored & Working
-
 // --- Imports ---
 const express = require('express');
 const cors = require('cors');
@@ -37,8 +35,8 @@ app.use(express.static(path.join(__dirname, 'public')));
 
 // --- Multer Configuration ---
 const storage = multer.diskStorage({
-  destination: (req, file, cb) => cb(null, uploadsDir),
-  filename: (req, file, cb) => cb(null, Date.now() + '-' + file.originalname)
+    destination: (req, file, cb) => cb(null, uploadsDir),
+    filename: (req, file, cb) => cb(null, Date.now() + '-' + file.originalname)
 });
 const upload = multer({ storage: storage });
 
@@ -69,14 +67,14 @@ async function extractSectionsFromPdfBuffer(pdfDataAsUint8Array) {
         const textContent = await page.getTextContent();
         let pageLines = [];
         let currentLine = '';
-        for(const item of textContent.items) {
+        for (const item of textContent.items) {
             currentLine += item.str;
             if (item.hasEOL) {
                 pageLines.push(currentLine.trim());
                 currentLine = '';
             }
         }
-        if(currentLine.trim() !== '') pageLines.push(currentLine.trim());
+        if (currentLine.trim() !== '') pageLines.push(currentLine.trim());
 
         fullText += pageLines.join('\n') + '\n';
 
@@ -91,8 +89,8 @@ async function extractSectionsFromPdfBuffer(pdfDataAsUint8Array) {
             }
         }
         if (currentSection.pageNumber !== p && currentSection.content.trim().length > 0) {
-             sections.push(currentSection);
-             currentSection = { title: `Content from Page ${p}`, content: '', pageNumber: p };
+            sections.push(currentSection);
+            currentSection = { title: `Content from Page ${p}`, content: '', pageNumber: p };
         }
     }
     if (currentSection.content.trim().length > 0) {
@@ -134,7 +132,7 @@ app.post('/upload', upload.array('files'), async (req, res) => {
             console.error(`Error processing file ${file.originalname}:`, error);
         }
     }
-    
+
     const currentLibrary = Array.from(documentStore.values()).map(doc => ({
         id: doc.id,
         name: doc.originalName,
@@ -164,8 +162,8 @@ app.post('/find-by-text', (req, res) => {
             if (section.content.toLowerCase().includes(lowerQuery)) {
                 const sentences = section.content.match(/[^.!?]+[.!?\s]+/g) || [];
                 let snippet = '';
-                for(let i = 0; i < sentences.length; i++) {
-                    if(sentences[i].toLowerCase().includes(lowerQuery)) {
+                for (let i = 0; i < sentences.length; i++) {
+                    if (sentences[i].toLowerCase().includes(lowerQuery)) {
                         snippet = sentences.slice(i, i + 3).join('').trim();
                         break;
                     }
@@ -191,12 +189,12 @@ app.post('/chat', async (req, res) => {
     const { query } = req.body;
     if (!query) return res.status(400).json({ error: 'Query is required.' });
     if (documentStore.size === 0) return res.status(400).json({ answer: "Please upload documents." });
-    
+
     const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
     if (!GEMINI_API_KEY) return res.status(500).json({ error: 'Gemini API key not configured.' });
 
     const libraryContent = Array.from(documentStore.values()).map(doc => `--- Document: ${doc.originalName} ---\n${doc.text}`).join('\n\n');
-    const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${GEMINI_API_KEY}`;
+    const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${GEMINI_API_KEY}`;
     const prompt = `Answer the user's "Question" based *only* on the "Document Library". Format your response as Markdown bullet points. If the answer isn't in the documents, say so.\n\nQuestion: "${query}"\n\nDocument Library:\n${libraryContent.substring(0, 30000)}`;
 
     try {
@@ -215,23 +213,23 @@ app.post('/chat', async (req, res) => {
 // --- ALL FEATURES RESTORED BELOW ---
 
 app.post('/translate', async (req, res) => {
-  const { text, targetLanguage } = req.body;
-  if (!text || !targetLanguage) return res.status(400).json({ error: 'Text and target language are required.' });
-  const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
-  if (!GEMINI_API_KEY) return res.status(500).json({ error: 'Gemini API key not configured.' });
-  const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${GEMINI_API_KEY}`;
-  const prompt = `Translate the following text to ${targetLanguage}. Provide only the translation.\n\nText: "${text}"`;
-  try {
-    const payload = { contents: [{ parts: [{ text: prompt }] }] };
-    const apiResponse = await fetch(API_URL, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
-    if (!apiResponse.ok) throw new Error(`Gemini API error: ${apiResponse.statusText}`);
-    const result = await apiResponse.json();
-    const translation = result.candidates[0].content.parts[0].text;
-    res.json({ translation });
-  } catch (error) {
-    console.error("Error in /translate:", error);
-    res.status(500).json({ error: 'Failed to translate text.' });
-  }
+    const { text, targetLanguage } = req.body;
+    if (!text || !targetLanguage) return res.status(400).json({ error: 'Text and target language are required.' });
+    const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
+    if (!GEMINI_API_KEY) return res.status(500).json({ error: 'Gemini API key not configured.' });
+    const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${GEMINI_API_KEY}`;
+    const prompt = `Translate the following text to ${targetLanguage}. Provide only the translation.\n\nText: "${text}"`;
+    try {
+        const payload = { contents: [{ parts: [{ text: prompt }] }] };
+        const apiResponse = await fetch(API_URL, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
+        if (!apiResponse.ok) throw new Error(`Gemini API error: ${apiResponse.statusText}`);
+        const result = await apiResponse.json();
+        const translation = result.candidates[0].content.parts[0].text;
+        res.json({ translation });
+    } catch (error) {
+        console.error("Error in /translate:", error);
+        res.status(500).json({ error: 'Failed to translate text.' });
+    }
 });
 
 app.post('/generate-insights', async (req, res) => {
@@ -240,7 +238,7 @@ app.post('/generate-insights', async (req, res) => {
     if (!doc) return res.status(404).json({ error: 'Document not found.' });
     const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
     if (!GEMINI_API_KEY) return res.status(500).json({ error: 'Gemini API key not configured.' });
-    const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${GEMINI_API_KEY}`;
+    const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${GEMINI_API_KEY}`;
     const prompt = `Based on the following text, provide a JSON object with four keys: "keyInsights", "didYouKnow", "contradictions", and "connections".\n\n- "keyInsights": A concise, one-sentence summary.\n- "didYouKnow": A surprising fact.\n- "contradictions": A potential counterpoint.\n- "connections": A broader connection.\n\nText:\n---\n${doc.text.substring(0, 15000)}\n---`;
     try {
         const payload = { contents: [{ parts: [{ text: prompt }] }], generationConfig: { responseMimeType: "application/json" } };
@@ -290,7 +288,7 @@ app.post('/generate-quiz', async (req, res) => {
     if (!doc) return res.status(404).json({ error: 'Document not found.' });
     const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
     if (!GEMINI_API_KEY) return res.status(500).json({ error: 'Gemini API key not configured.' });
-    const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${GEMINI_API_KEY}`;
+    const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${GEMINI_API_KEY}`;
     const prompt = `Create a JSON array of 5 multiple-choice questions from the text below. Each object must have "question", "options" (an array of 4), and "correctAnswer" keys.\n\nText:\n---\n${doc.text.substring(0, 15000)}\n---`;
     try {
         const payload = { contents: [{ parts: [{ text: prompt }] }], generationConfig: { responseMimeType: "application/json" } };
@@ -311,7 +309,7 @@ app.post('/generate-presentation', async (req, res) => {
     if (!doc) return res.status(404).json({ error: 'Document not found.' });
     const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
     if (!GEMINI_API_KEY) return res.status(500).json({ error: 'Gemini API key not configured.' });
-    const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash-preview-05-20:generateContent?key=${GEMINI_API_KEY}`;
+    const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${GEMINI_API_KEY}`;
     const prompt = `Create a JSON object for a 5-slide presentation from the text below. The object must have a "slides" key, which is an array of 5 objects. Each object must have "title" and "content" (array of strings) keys.\n\nText:\n---\n${doc.text.substring(0, 15000)}\n---`;
     try {
         const payload = { contents: [{ parts: [{ text: prompt }] }], generationConfig: { responseMimeType: "application/json" } };
@@ -328,10 +326,10 @@ app.post('/generate-presentation', async (req, res) => {
 
 // Serve frontend
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, 'public', 'index.html'));
+    res.sendFile(path.join(__dirname, 'public', 'index.html'));
 });
 
 // Start server
 app.listen(PORT, () => {
-  console.log(`Server is running on http://localhost:${PORT}`);
+    console.log(`Server is running on http://localhost:${PORT}`);
 });

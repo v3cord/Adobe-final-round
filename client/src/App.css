@@ -104,6 +104,12 @@ body {
   flex-grow: 1;
   overflow: hidden;
 }
+.related-sections-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 10px; /* Add some space below the header */
+}
 
 /* --- Sidebar (Document Library) --- */
 .sidebar {
@@ -166,6 +172,51 @@ body {
   color: var(--text-secondary);
   text-align: center;
 }
+.return-button {
+  background-color: var(--border-color);
+  border: none;
+  border-radius: 50%; /* Makes it circular */
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  color: var(--text-secondary);
+  position: relative; /* For the tooltip */
+  transition: all 0.2s ease;
+}
+
+.return-button:hover {
+  background-color: var(--accent-red);
+  color: white;
+}
+
+/* ADD tooltip styles similar to the tab buttons */
+.return-button[data-tooltip]::before {
+  content: attr(data-tooltip);
+  position: absolute;
+  background-color: var(--background);
+  color: var(--text-primary);
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 0.85em;
+  white-space: nowrap;
+  bottom: 125%; /* Position above the button */
+  left: 50%;
+  transform: translateX(-50%);
+  opacity: 0;
+  visibility: hidden;
+  transition: all 0.2s ease-in-out;
+  border: 1px solid var(--border-color);
+  z-index: 10;
+}
+
+.return-button[data-tooltip]:hover::before {
+  opacity: 1;
+  visibility: visible;
+}
+
 
 /* --- Viewer Container --- */
 .viewer-container {
@@ -184,7 +235,7 @@ body {
   margin-bottom: 24px;
 }
 
-.react-pdf__Page__canvas {
+.react-pdf_Page_canvas {
   border-radius: 8px;
   box-shadow: 0 10px 30px var(--shadow-color);
 }
@@ -209,21 +260,63 @@ body {
 .right-panel {
   background-color: var(--background-panel-transparent);
   border-left: 1px solid var(--border-color);
-  display: grid;
-  grid-template-columns: 60px 1fr; /* Icon bar and content */
+  display: flex; /* CHANGED from 'grid' */
+  flex-direction: row; /* ADDED this line */
   overflow: hidden;
 }
 
+/* 2. Update the .vertical-tabs rule */
 .vertical-tabs {
   display: flex;
   flex-direction: column;
   padding: 10px;
   gap: 10px;
   border-right: 1px solid var(--border-color);
+  height: 100%;
+  flex-shrink: 0; /* ADDED: Prevents this column from shrinking */
+  width: 60px;      /* ADDED: Explicitly sets the width */
+}
+/* ADD THIS NEW RULE */
+.tab-buttons-group {
+  flex-grow: 1; /* Allows this group to expand and take up the empty space */
+  display: flex;
+  flex-direction: column;
+  justify-content: left; /* This vertically centers the icons within the group */
+  gap: 10px; /* Adds spacing between the tab buttons */
+  align-items: center; /* Centers the buttons horizontally */
+}
+.viewer-controls {
+  margin-top: auto; /* Pushes this block to the bottom */
+  padding-top: 10px;
+  border-top: 1px solid var(--border-color);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
 }
 
+.page-indicator {
+  color: var(--text-secondary);
+  font-size: 0.8em;
+  font-weight: 600;
+  background-color: var(--background);
+  padding: 8px 0;
+  width: 100%;
+  text-align: center;
+  border-radius: 6px;
+}
+
+.viewer-controls .tab-button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  background-color: transparent;
+}
+/* In App.css */
+
 .tab-button {
-  padding: 15px;
+  /* Adjust padding to ensure perfect centering */
+  padding: 12px; /* CHANGED from 15px */
+  
   background-color: transparent;
   border: none;
   color: var(--text-secondary);
@@ -231,6 +324,18 @@ body {
   transition: all 0.2s ease;
   border-radius: 8px;
   position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  
+  /* Add a fixed size for consistency */
+  width: 48px;
+  height: 48px;
+}
+
+.tab-button svg {
+  width: 28x;
+  height: 16px;
 }
 
 .tab-button:hover {
@@ -242,13 +347,62 @@ body {
   background-color: rgba(250, 15, 0, 0.1);
   color: var(--accent-red);
 }
+/* ... after .tab-button.active rule ... */
+
+/* --- Custom CSS Tooltip --- */
+.tab-button[data-tooltip]::before,
+.tab-button[data-tooltip]::after {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: all 0.2s ease-in-out;
+  position: absolute;
+  z-index: 10;
+}
+
+/* Tooltip Content Box */
+.tab-button[data-tooltip]::before {
+  content: attr(data-tooltip);
+  background-color: var(--background);
+  color: var(--text-primary);
+  padding: 4px 10px;
+  border-radius: 6px;
+  font-size: 0.85em;
+  font-weight: 500;
+  white-space: nowrap;
+  top: 50%;
+  right: 100%; /* Position to the left of the button */
+  margin-right: 12px;
+  transform: translateY(-50%);
+  border: 1px solid var(--border-color);
+}
+
+/* Tooltip Arrow */
+.tab-button[data-tooltip]::after {
+  content: '';
+  top: 50%;
+  right: 100%;
+  margin-right: 7px; /* Position between button and tooltip box */
+  transform: translateY(-50%);
+  border-width: 5px;
+  border-style: solid;
+  border-color: transparent transparent transparent var(--background); /* Creates a triangle pointing right */
+}
+
+/* Show on Hover */
+.tab-button[data-tooltip]:hover::before,
+.tab-button[data-tooltip]:hover::after {
+  opacity: 1;
+  visibility: invisible;
+}
 
 /* --- IMPORTANT: panel-content MUST be full-height flex column to allow inner panels to pin bottom elements --- */
 .panel-content {
     display: flex;
     flex-direction: column;
     height: 100%;
-    overflow: hidden; /* ensure internal scroll areas control scrolling */
+    overflow: hidden;
+    flex-grow: 1; /* ADDED: Makes this column take all remaining space */
 }
 
 .insights-panel, .chat-panel, .quiz-panel, .presentation-panel {
@@ -270,9 +424,9 @@ body {
   font-size: 1.1em;
   font-weight: 600;
   color: var(--text-primary);
-  margin-top: 0;
-  padding-bottom: 10px;
-  border-bottom: 1px solid var(--border-color);
+  margin: 0; 
+  padding: 0;
+  border: none;
   flex-shrink: 0;
 }
 
@@ -532,88 +686,138 @@ body {
 
 /* ============================
    TRANSLATE PANEL SPECIFIC STYLES
-   (ensures translate buttons are always visible)
+   ============================ */
+/* ============================
+   TRANSLATE PANEL SPECIFIC STYLES
    ============================ */
 
-/* container for the translate panel inside the right column */
 .translate-panel {
   display: flex;
   flex-direction: column;
-  height: 100%;               /* occupy all available height of panel-content */
-  padding: 16px;
-  gap: 8px;
+  height: 100%;
+  padding: 25px 20px 20px 20px; /* This adds padding to the top to prevent the title from sticking to the roof */
   box-sizing: border-box;
-  overflow: hidden;           /* important: internal areas handle scrolling */
+  gap: 16px;
 }
 
-/* selected text box (top) */
-.translate-box.selected {
-  background: rgba(255,255,255,0.02);
-  border: 1px solid var(--border-color);
-  padding: 12px;
-  border-radius: 8px;
-  font-size: 0.9em;
+.translate-panel h2 {
+  font-size: 1.1em;
+  font-weight: 600;
   color: var(--text-primary);
-  max-height: 120px;
-  overflow: auto;
+  margin-top: 0;
+  padding-bottom: 10px;
+  border-bottom: 1px solid var(--border-color);
+  flex-shrink: 0;
 }
 
-/* main scrollable translations area - THIS is the only area that scrolls */
-.translate-scroll {
-  flex: 1 1 auto;           /* expand to take remaining height in translate-panel */
-  min-height: 0;            /* allow flexbox to correctly clip children */
-  overflow-y: auto;         /* scroll only this area */
-  padding: 8px;
-  background: linear-gradient(180deg, rgba(255,255,255,0.01), transparent);
-  border-radius: 8px;
-  border: 1px solid rgba(255,255,255,0.03);
-}
-
-/* individual translation box inside the scroller */
 .translate-box {
-  background: transparent;
-  padding: 10px;
-  border-radius: 6px;
+  background-color: var(--background);
+  border: 1px solid var(--border-color);
+  border-radius: 8px;
+  padding: 12px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
 }
 
-/* current translation highlighted */
-.translate-box.current {
+.translate-box h3 {
+  margin: 0;
+  font-size: 0.8em;
+  font-weight: 600;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.translate-box p {
+  margin: 0;
+  font-size: 0.95em;
+  line-height: 1.6;
+  color: var(--text-primary);
+  word-break: break-word;
+  white-space: pre-wrap;
+}
+
+.translate-box.source-text {
+  max-height: 150px;      /* Limits the maximum height of the box */
+  overflow-y: auto;       /* This adds the scrollbar when content is too long */
+  flex-shrink: 0;
+}
+
+.translate-action-bar {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  gap: 15px;
+  flex-shrink: 0;
+}
+
+.translate-action-bar .quiz-button {
+  margin: 0;
+  padding: 10px 25px;
+  width: auto;
+  flex-grow: 0;
+}
+
+.translate-results {
+  flex-grow: 1;
+  overflow-y: auto;
+  min-height: 0;
+  border-radius: 8px;
+  padding-right: 5px;
+}
+
+.translate-box.translated-text {
   border-left: 3px solid var(--accent-red);
-  padding-left: 12px;
 }
 
-/* bottom navigation row (pinned) */
 .translate-nav {
   display: flex;
-  gap: 8px;
-  margin-top: auto;   /* pushes this row to bottom of translate-panel */
+  gap: 10px;
   align-items: center;
-  justify-content: space-between;
-  padding-top: 8px;
-  border-top: 1px solid rgba(255,255,255,0.03);
+  padding-top: 10px;
+  border-top: 1px solid var(--border-color);
+  flex-shrink: 0;
+  margin-top: auto;
 }
 
-/* keep buttons same appearance as other quiz/insight buttons, but allow them to shrink */
-.translate-nav .quiz-button {
-  flex: 1;
-  padding: 10px;
-  font-size: 0.9em;
-  border-radius: 8px;
-  background: var(--accent-red);
-  color: #fff;
-  border: none;
-}
-.translate-nav .quiz-button:disabled {
-  opacity: 0.6;
-  cursor: not-allowed;
-  background: #444;
-}
-
-/* small helper to show translation count near Translate action (keeps layout tidy) */
-.translate-panel .translation-count {
+.translate-nav .nav-button {
+  background: transparent;
+  border: 1px solid var(--border-color);
   color: var(--text-secondary);
-  font-size: 13px;
+  padding: 8px;
+  border-radius: 6px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
 }
+
+.translate-nav .nav-button:hover {
+  border-color: var(--accent-red);
+  color: var(--accent-red);
+}
+
+.translate-nav .nav-button:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+  border-color: var(--border-color);
+  color: var(--text-secondary);
+}
+
+.translate-nav .translation-count {
+  color: var(--text-secondary);
+  font-size: 0.9em;
+  font-weight: 500;
+  text-align: center;
+  flex-grow: 1; /* This centers the count between the buttons */
+}
+
+
+/* ============================
+   (End of Translate Panel Styles)
+   ============================ */
 
 /* Ensure long lines wrap */
 .translate-panel p { word-break: break-word; white-space: pre-wrap; }
