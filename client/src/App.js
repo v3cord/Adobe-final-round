@@ -8,6 +8,49 @@ import './App.css';
 pdfjs.GlobalWorkerOptions.workerSrc = `https://cdnjs.cloudflare.com/ajax/libs/pdf.js/${pdfjs.version}/pdf.worker.mjs`;
 
 /* -------------------------------------------------------------------------- */
+/* NEW THEME SWITCHER COMPONENT                                               */
+/* -------------------------------------------------------------------------- */
+const ThemeSwitcher = ({ theme, onThemeChange, readingIntensity, onIntensityChange }) => {
+  return (
+    <div className="theme-switcher">
+      <button
+        className={`theme-btn ${theme === 'day' ? 'active' : ''}`}
+        onClick={() => onThemeChange('day')}
+        title="Day Mode"
+      >
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 17C14.7614 17 17 14.7614 17 12C17 9.23858 14.7614 7 12 7C9.23858 7 7 9.23858 7 12C7 14.7614 9.23858 17 12 17Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/><path d="M12 1V3" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/><path d="M12 21V23" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/><path d="M4.22 4.22L5.64 5.64" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/><path d="M18.36 18.36L19.78 19.78" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/><path d="M1 4.22L2.12 5.64" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/><path d="M18.36 5.64L19.78 4.22" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/><path d="M1 12H3" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/><path d="M21 12H23" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/><path d="M4.22 19.78L5.64 18.36" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/><path d="M18.36 19.78L19.78 18.36" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+      </button>
+      <button
+        className={`theme-btn ${theme === 'night' ? 'active' : ''}`}
+        onClick={() => onThemeChange('night')}
+        title="Night Mode"
+      >
+       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M21 12.79C21 17.02 17.52 20.5 13.29 20.5C10.93 20.5 8.81 19.45 7.4 17.88C7.31 17.76 7.22 17.64 7.12 17.52C4.14 15.17 3.5 11.23 4.93 7.82C6.35 4.41 9.77 2.5 13.29 2.5C13.5 2.5 13.71 2.5 13.91 2.52C13.88 3.54 14.24 4.53 14.9 5.31C16.44 6.99 18.66 7.55 20.61 6.83C20.84 8.7 21 10.7 21 12.79Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+      </button>
+      <div className="reading-mode-controls">
+        <button
+          className={`theme-btn ${theme === 'reading' ? 'active' : ''}`}
+          onClick={() => onThemeChange('reading')}
+          title="Reading Mode"
+        >
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2V3z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7V3z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+        </button>
+        {theme === 'reading' && (
+          <input
+            type="range"
+            min="0"
+            max="100"
+            value={readingIntensity}
+            onChange={(e) => onIntensityChange(e.target.value)}
+            className="intensity-slider"
+            title={`Filter intensity: ${readingIntensity}%`}
+          />
+        )}
+      </div>
+    </div>
+  );
+};
+/* -------------------------------------------------------------------------- */
 /* PRESENTATIONAL & UI COMPONENTS                                             */
 /* -------------------------------------------------------------------------- */
 
@@ -31,12 +74,22 @@ const LandingPage = ({ onLaunch }) => (
   </div>
 );
 
-const AppHeader = ({ onFileChange }) => (
+const AppHeader = ({ onFileChange, onToggleSidebar, theme, onThemeChange, readingIntensity, onIntensityChange  }) => (
   <header className="App-header">
     <div className="logo">
+      
+      <button onClick={onToggleSidebar} className="sidebar-toggle-button">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3 12H21" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/><path d="M3 6H21" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/><path d="M3 18H21" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+      </button>
       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M14 2H6C4.89543 2 4 2.89543 4 4V20C4 21.1046 4.89543 22 6 22H18C19.1046 22 20 21.1046 20 20V8L14 2Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /><path d="M14 2V8H20" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>
       <h1>Insights Engine</h1>
     </div>
+    <ThemeSwitcher 
+        theme={theme} 
+        onThemeChange={onThemeChange}
+        readingIntensity={readingIntensity}
+        onIntensityChange={onIntensityChange}
+    />
     <label htmlFor="file-upload" className="file-upload-label">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M21 15V19C21 19.5304 20.7893 20.0391 20.4142 20.4142C20.0391 20.7893 19.5304 21 19 21H5C4.46957 21 3.96086 20.7893 3.58579 20.4142C3.21071 20.0391 3 19.5304 3 19V15" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /><path d="M17 8L12 3L7 8" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /><path d="M12 3V15" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>
       <span>Add PDFs</span>
@@ -48,7 +101,6 @@ const AppHeader = ({ onFileChange }) => (
 const Sidebar = ({ documentLibrary, activeFile, handleFileSelect, uploadStatus }) => (
   <aside className="sidebar">
     <h2>
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M8 6H21" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /><path d="M8 12H21" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /><path d="M8 18H21" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /><path d="M3 6H3.01" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /><path d="M3 12H3.01" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /><path d="M3 18H3.01" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>
       Document Library
     </h2>
     <ul className="document-list">
@@ -138,9 +190,9 @@ const InsightsPanel = ({ activeFile, isLoadingInsights, aiInsights, handleGenera
       {isLoadingInsights && <div className="loader-small"></div>}
       {aiInsights && (
         <div className="insights-container">
-          <InsightCard icon="🔑" title="Key Insights" content={aiInsights.keyInsights} />
-          <InsightCard icon="💡" title="Did You Know?" content={aiInsights.didYouKnow} />
-          <InsightCard icon="🤔" title="Contradictions" content={aiInsights.contradictions} />
+          <InsightCard icon="💡" title="Key Insights" content={aiInsights.keyInsights} />
+          <InsightCard icon="🎓" title="Did You Know?" content={aiInsights.didYouKnow} />
+          <InsightCard icon="↔️" title="Contradictions" content={aiInsights.contradictions} />
           <InsightCard icon="🔗" title="Connections" content={aiInsights.connections} />
           <div className="podcast-section">
             <button onClick={handleGeneratePodcast} disabled={isLoadingPodcast || !aiInsights} className="podcast-button">
@@ -262,7 +314,7 @@ const PresentationPanel = ({ presentation, activeFile, isLoadingPresentation, ha
         </div>
         <div className="slide-nav">
           <button onClick={handlePrevSlide} disabled={currentSlideIndex === 0}>Previous</button>
-          <span>Slide {currentSlideIndex + 1} of {presentation.length}</span>
+          <span>{currentSlideIndex + 1} / {presentation.length}</span>
           <button onClick={handleNextSlide} disabled={currentSlideIndex === presentation.length - 1}>Next</button>
         </div>
       </div>
@@ -400,10 +452,14 @@ const RightPanel = (props) => {
 function App() {
   // --- STATE MANAGEMENT ---
   const [appState, setAppState] = useState('landing');
-  const [documentLibrary, setDocumentLibrary] = useState([]);
+  const [isSidebarVisible, setIsSidebarVisible] = useState(true);
+  const [theme, setTheme] = useState('night'); // 'night', 'day', 'reading'
+  const [readingIntensity, setReadingIntensity] = useState(50); // 0 to 100
   const [activeFile, setActiveFile] = useState(null);
   const [numPages, setNumPages] = useState(null);
   const [uploadStatus, setUploadStatus] = useState('');
+  const [documentLibrary, setDocumentLibrary] = useState([]);
+  
 
   const [recommendations, setRecommendations] = useState([]);
   const [isLoadingRecs, setIsLoadingRecs] = useState(false);
@@ -512,6 +568,11 @@ function App() {
       return Math.max(1, Math.trunc(p + 1));
     }
     return 1;
+  };
+  
+  // <-- ADDED: Function to toggle sidebar
+  const toggleSidebar = () => {
+    setIsSidebarVisible(prev => !prev);
   };
 
   // --- DATA FETCHING & EVENT HANDLERS ---
@@ -728,9 +789,9 @@ function App() {
       const response = await axios.post('/generate-presentation', { documentId: activeFile.id });
       setPresentation(response.data.slides);
       setCurrentSlideIndex(0);
-    } catch (error) { // <-- Added opening brace here
+    } catch (error) {
       console.error('Error generating presentation:', error);
-    } finally { // <-- And the closing brace was already implicitly there before finally
+    } finally {
       setIsLoadingPresentation(false);
     }
   };
@@ -772,10 +833,23 @@ function App() {
     return <LandingPage onLaunch={() => setAppState('engine')} />;
   }
 
-  return (
-    <div className="App">
-      <AppHeader onFileChange={onFileChange} />
-      <div className="main-content">
+   return (
+    <div className={`App ${theme}`}>
+        {theme === 'reading' && (
+            <div
+              className="reading-mode-overlay"
+              style={{ opacity: readingIntensity / 100 * 0.4 }} // Max opacity of 40%
+            ></div>
+        )}
+      <AppHeader 
+        onFileChange={onFileChange} 
+        onToggleSidebar={toggleSidebar}
+        theme={theme}
+        onThemeChange={setTheme}
+        readingIntensity={readingIntensity}
+        onIntensityChange={setReadingIntensity}
+      />
+      <div className={`main-content ${isSidebarVisible ? '' : 'sidebar-hidden'}`}>
         <Sidebar
           documentLibrary={documentLibrary}
           activeFile={activeFile}

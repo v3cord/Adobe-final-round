@@ -14,6 +14,30 @@
   --border-color: #2D2D2D;
   --shadow-color: rgba(0, 0, 0, 0.5);
 }
+/* DAY MODE THEME */
+.App.day {
+  --background: #F4F4F4;
+  --background-panel: #FFFFFF;
+  --background-panel-transparent: rgba(255, 255, 255, 0.7);
+  --text-primary: #181818;
+  --text-secondary: #5A5A5A;
+  --border-color: #E0E0E0;
+  --shadow-color: rgba(0, 0, 0, 0.1);
+}
+
+/* READING MODE OVERLAY (uses Night theme underneath) */
+.reading-mode-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: #f8c56e; /* Warm, sepia-like color */
+  mix-blend-mode: multiply; /* Excellent for color filtering effects */
+  pointer-events: none; /* Allows clicks to pass through to elements underneath */
+  z-index: 9999;
+  transition: opacity 0.3s ease;
+}
 
 /* --- General App Styling --- */
 body {
@@ -67,6 +91,26 @@ body {
   color: var(--accent-red);
 }
 
+.sidebar-toggle-button {
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  cursor: pointer;
+  padding: 8px;
+  margin-right: 8px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.sidebar-toggle-button:hover {
+  background-color: rgba(255, 255, 255, 0.05);
+  color: var(--text-primary);
+}
+
+
 .logo h1 {
   font-size: 1.25em;
   font-weight: 600;
@@ -96,22 +140,118 @@ body {
 #file-upload {
   display: none;
 }
+/* NEW: Styles for the Theme Switcher */
+.theme-switcher {
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  background-color: var(--background);
+  padding: 4px;
+  border-radius: 8px;
+  border: 1px solid var(--border-color);
+  transition: background-color 0.3s ease, border-color 0.3s ease;
+}
+.theme-btn {
+  padding: 5px;
+  border: none;
+  border-radius: 6px;
+  background-color: transparent;
+  color: var(--text-secondary);
+  cursor: pointer;
+  font-weight: 600;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.theme-btn:hover {
+    color: var(--text-primary);
+    background-color: var(--border-color);
+}
+.theme-btn.active {
+  background-color: var(--accent-red);
+  color: white;
+}
+.theme-btn.active:hover {
+    background-color: #d80d00;
+    color: white;
+}
+.reading-mode-controls {
+  display: flex;
+  align-items: center;
+}
+.intensity-slider {
+  margin-left: 8px;
+  width: 80px;
+  height: 4px;
+  -webkit-appearance: none;
+  appearance: none;
+  background: var(--border-color);
+  outline: none;
+  border-radius: 2px;
+}
+.intensity-slider::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--accent-red);
+  cursor: pointer;
+}
+.intensity-slider::-moz-range-thumb {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  background: var(--accent-red);
+  cursor: pointer;
+}
+/* For the scrollbar */
+.App.day ::-webkit-scrollbar-thumb {
+    background: #ccc;
+}
+.App.day ::-webkit-scrollbar-thumb:hover {
+    background: #aaa;
+}
 
+/* For the active document item */
+.App.day .document-item.active {
+    background-color: rgba(250, 15, 0, 0.08);
+}
+
+/* For the active tab button on the right */
+.App.day .tab-button.active {
+    background-color: rgba(250, 15, 0, 0.08);
+}
+
+/* For the AI chat bubble */
+.App.day .chat-bubble.ai {
+    background-color: #E9E9EB;
+}
 /* --- Main Content Area --- */
+/* MODIFIED: Using a direct grid transition for a smoother expansion effect */
 .main-content {
   display: grid;
   grid-template-columns: 280px 1fr 380px;
   flex-grow: 1;
   overflow: hidden;
+  transition: grid-template-columns 0.3s ease-in-out;
 }
+
+/* ADDED: Defines the grid layout when the sidebar is hidden */
+.main-content.sidebar-hidden {
+  grid-template-columns: 0 1fr 380px;
+}
+
 .related-sections-header {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  margin-bottom: 10px; /* Add some space below the header */
+  margin-bottom: 10px;
 }
 
 /* --- Sidebar (Document Library) --- */
+/* MODIFIED: Simplified transition properties */
 .sidebar {
   background-color: var(--background-panel-transparent);
   border-right: 1px solid var(--border-color);
@@ -119,7 +259,19 @@ body {
   overflow-y: auto;
   display: flex;
   flex-direction: column;
+  overflow-x: hidden; /* Hide content when shrinking */
+  transition: padding 0.3s ease-in-out, opacity 0.2s ease-in-out, border-color 0.3s ease-in-out;
+  opacity: 1;
 }
+
+/* MODIFIED: Updated styles for the hidden state */
+.main-content.sidebar-hidden .sidebar {
+  padding-left: 0;
+  padding-right: 0;
+  opacity: 0;
+  border-right-color: transparent;
+}
+
 
 .sidebar h2 {
   font-size: 1.1em;
@@ -131,6 +283,7 @@ body {
   display: flex;
   align-items: center;
   gap: 8px;
+  white-space: nowrap; /* Keep title on one line */
 }
 
 .document-list {
@@ -192,7 +345,6 @@ body {
   color: white;
 }
 
-/* ADD tooltip styles similar to the tab buttons */
 .return-button[data-tooltip]::before {
   content: attr(data-tooltip);
   position: absolute;
@@ -260,34 +412,34 @@ body {
 .right-panel {
   background-color: var(--background-panel-transparent);
   border-left: 1px solid var(--border-color);
-  display: flex; /* CHANGED from 'grid' */
-  flex-direction: row; /* ADDED this line */
+  display: flex; 
+  flex-direction: row; 
   overflow: hidden;
 }
 
-/* 2. Update the .vertical-tabs rule */
 .vertical-tabs {
   display: flex;
   flex-direction: column;
-  padding: 10px;
+  padding: 4px;
   gap: 10px;
   border-right: 1px solid var(--border-color);
   height: 100%;
-  flex-shrink: 0; /* ADDED: Prevents this column from shrinking */
-  width: 60px;      /* ADDED: Explicitly sets the width */
+  flex-shrink: 0;
+  width: 60px;
 }
-/* ADD THIS NEW RULE */
+
 .tab-buttons-group {
-  flex-grow: 1; /* Allows this group to expand and take up the empty space */
+  flex-grow: 1; 
   display: flex;
   flex-direction: column;
-  justify-content: left; /* This vertically centers the icons within the group */
-  gap: 10px; /* Adds spacing between the tab buttons */
-  align-items: center; /* Centers the buttons horizontally */
+  justify-content: left; 
+  gap: 5px; 
+  align-items: center; 
 }
 .viewer-controls {
-  margin-top: auto; /* Pushes this block to the bottom */
-  padding-top: 10px;
+  margin-top: auto; 
+  padding-top: 5px;
+  padding-bottom: 10px;
   border-top: 1px solid var(--border-color);
   display: flex;
   flex-direction: column;
@@ -300,7 +452,7 @@ body {
   font-size: 0.8em;
   font-weight: 600;
   background-color: var(--background);
-  padding: 8px 0;
+  padding: 10px 0;
   width: 100%;
   text-align: center;
   border-radius: 6px;
@@ -311,12 +463,9 @@ body {
   cursor: not-allowed;
   background-color: transparent;
 }
-/* In App.css */
 
 .tab-button {
-  /* Adjust padding to ensure perfect centering */
-  padding: 12px; /* CHANGED from 15px */
-  
+  padding: 4px;
   background-color: transparent;
   border: none;
   color: var(--text-secondary);
@@ -327,8 +476,6 @@ body {
   display: flex;
   align-items: center;
   justify-content: center;
-  
-  /* Add a fixed size for consistency */
   width: 48px;
   height: 48px;
 }
@@ -347,7 +494,6 @@ body {
   background-color: rgba(250, 15, 0, 0.1);
   color: var(--accent-red);
 }
-/* ... after .tab-button.active rule ... */
 
 /* --- Custom CSS Tooltip --- */
 .tab-button[data-tooltip]::before,
@@ -360,7 +506,6 @@ body {
   z-index: 10;
 }
 
-/* Tooltip Content Box */
 .tab-button[data-tooltip]::before {
   content: attr(data-tooltip);
   background-color: var(--background);
@@ -371,41 +516,38 @@ body {
   font-weight: 500;
   white-space: nowrap;
   top: 50%;
-  right: 100%; /* Position to the left of the button */
+  right: 100%;
   margin-right: 12px;
   transform: translateY(-50%);
   border: 1px solid var(--border-color);
 }
 
-/* Tooltip Arrow */
 .tab-button[data-tooltip]::after {
   content: '';
   top: 50%;
   right: 100%;
-  margin-right: 7px; /* Position between button and tooltip box */
+  margin-right: 7px;
   transform: translateY(-50%);
   border-width: 5px;
   border-style: solid;
-  border-color: transparent transparent transparent var(--background); /* Creates a triangle pointing right */
+  border-color: transparent transparent transparent var(--background);
 }
 
-/* Show on Hover */
 .tab-button[data-tooltip]:hover::before,
 .tab-button[data-tooltip]:hover::after {
   opacity: 1;
-  visibility: invisible;
+  visibility: visible;
 }
 
-/* --- IMPORTANT: panel-content MUST be full-height flex column to allow inner panels to pin bottom elements --- */
 .panel-content {
     display: flex;
     flex-direction: column;
     height: 100%;
     overflow: hidden;
-    flex-grow: 1; /* ADDED: Makes this column take all remaining space */
+    flex-grow: 1;
 }
 
-.insights-panel, .chat-panel, .quiz-panel, .presentation-panel {
+.insights-panel, .chat-panel, .quiz-panel, .presentation-panel, .translate-panel {
   display: flex;
   flex-direction: column;
   overflow-y: auto;
@@ -413,14 +555,14 @@ body {
 }
 
 .chat-panel {
-    padding: 0; /* Chat panel has its own padding */
+    padding: 0;
 }
 
 .insights-panel, .quiz-panel, .presentation-panel {
-    padding: 20px;
+    padding: 8px;
 }
 
-.insights-panel h2, .quiz-panel h2, .presentation-panel h2 {
+.insights-panel h2, .quiz-panel h2, .presentation-panel h2, .translate-panel h2 {
   font-size: 1.1em;
   font-weight: 600;
   color: var(--text-primary);
@@ -429,6 +571,8 @@ body {
   border: none;
   flex-shrink: 0;
 }
+
+/* --- ALL OTHER STYLES BELOW ARE UNCHANGED --- */
 
 .insights-button, .podcast-button, .quiz-button {
   width: 100%;
@@ -535,7 +679,6 @@ body {
     color: white;
 }
 
-/* --- Chat Panel --- */
 .chat-messages {
   flex-grow: 1;
   overflow-y: auto;
@@ -601,7 +744,6 @@ body {
 .chat-input-form button:hover { background-color: #d80d00; }
 .chat-input-form button:disabled { background-color: #444; cursor: not-allowed; opacity: 0.7; }
 
-/* --- Quiz Panel --- */
 .quiz-container { display: flex; flex-direction: column; gap: 20px; }
 .quiz-header h3 { font-size: 1em; color: var(--text-secondary); margin: 0 0 10px; }
 .quiz-question { font-size: 1.1em; font-weight: 600; line-height: 1.5; }
@@ -614,220 +756,58 @@ body {
 .quiz-results h2 { font-size: 1.5em; margin-bottom: 10px; }
 .quiz-results .score { font-size: 1.2em; color: var(--accent-red); font-weight: 700; margin-bottom: 30px; }
 
-/* --- Presentation Panel --- */
-.presentation-container { display: flex; flex-direction: column; height: 100%; }
-.slide { flex-grow: 1; background-color: var(--background); border: 1px solid var(--border-color); border-radius: 8px; padding: 25px; }
-.slide-title { font-size: 1.4em; font-weight: 700; color: var(--accent-red); margin: 0 0 20px; }
-.slide-content { list-style-position: inside; padding-left: 10px; }
-.slide-content li { font-size: 1em; line-height: 1.8; color: var(--text-primary); margin-bottom: 12px; }
+.presentation-container { display: flex; flex-direction: column; flex-grow: 1; }
+.slide { flex-grow: 1; background-color: var(--background); border: 1px solid var(--border-color); border-radius: 8px; padding: 5px; }
+.slide-title { font-size: 1em; font-weight: 700; color: var(--accent-red); margin: 0 0 5px; }
+.slide-content { list-style-position: inside; padding-left: 5px; }
+.slide-content li { font-size: 0.78em; line-height: 1.8; color: var(--text-primary); margin-bottom: 6.2px; }
 .slide-nav { display: flex; justify-content: space-between; align-items: center; padding-top: 20px; flex-shrink: 0; }
 .slide-nav button { background: var(--background-lighter); border: 1px solid var(--border-color); color: var(--text-primary); padding: 8px 15px; border-radius: 5px; cursor: pointer; transition: all 0.2s ease; }
 .slide-nav button:hover { background-color: var(--accent-red); color: white; }
 .slide-nav button:disabled { background-color: #333; cursor: not-allowed; opacity: 0.5; }
 
-
-/* --- Typing Indicator --- */
 .typing-indicator span { height: 8px; width: 8px; background-color: var(--text-secondary); border-radius: 50%; display: inline-block; animation: bounce 1.4s infinite ease-in-out both; }
 .typing-indicator span:nth-of-type(1) { animation-delay: -0.32s; }
 .typing-indicator span:nth-of-type(2) { animation-delay: -0.16s; }
 
 @keyframes bounce { 0%, 80%, 100% { transform: scale(0); } 40% { transform: scale(1.0); } }
 
-/* --- Loaders --- */
 .loader { border: 5px solid #333; border-top: 5px solid var(--accent-red); border-radius: 50%; width: 50px; height: 50px; animation: spin 1s linear infinite; margin: 50px auto; }
 .loader-small { border: 3px solid #444; border-top: 3px solid var(--accent-red); border-radius: 50%; width: 24px; height: 24px; animation: spin 1s linear infinite; margin: 10px auto; }
 
 @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
 
-/* --- Landing Page --- */
-.landing-page {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
-    text-align: center;
-    color: white;
-}
-.landing-content {
-    max-width: 600px;
-    padding: 40px;
-    background: rgba(0,0,0,0.5);
-    border-radius: 15px;
-    backdrop-filter: blur(10px);
-}
-.landing-content h1 {
-    font-size: 3em;
-    font-weight: 700;
-    margin-bottom: 20px;
-    text-shadow: 0 0 15px var(--accent-red);
-}
-.landing-content p {
-    font-size: 1.1em;
-    color: var(--text-secondary);
-    margin-bottom: 40px;
-    line-height: 1.6;
-}
-.launch-button {
-    background: var(--accent-red);
-    color: white;
-    padding: 15px 30px;
-    border-radius: 8px;
-    cursor: pointer;
-    font-weight: 600;
-    font-size: 1.2em;
-    transition: all 0.3s ease;
-    border: none;
-    text-shadow: 0 0 8px rgba(255, 255, 255, 0.5);
-}
-.launch-button:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 8px 25px rgba(250, 15, 0, 0.5);
-}
+.landing-page { display: flex; justify-content: center; align-items: center; height: 100vh; text-align: center; color: white; }
+.landing-content { max-width: 600px; padding: 40px; background: rgba(0,0,0,0.5); border-radius: 15px; backdrop-filter: blur(10px); }
+.landing-content h1 { font-size: 3em; font-weight: 700; margin-bottom: 20px; text-shadow: 0 0 15px var(--accent-red); }
+.landing-content p { font-size: 1.1em; color: var(--text-secondary); margin-bottom: 40px; line-height: 1.6; }
+.launch-button { background: var(--accent-red); color: white; padding: 15px 30px; border-radius: 8px; cursor: pointer; font-weight: 600; font-size: 1.2em; transition: all 0.3s ease; border: none; text-shadow: 0 0 8px rgba(255, 255, 255, 0.5); }
+.launch-button:hover { transform: translateY(-3px); box-shadow: 0 8px 25px rgba(250, 15, 0, 0.5); }
 
-/* ============================
-   TRANSLATE PANEL SPECIFIC STYLES
-   ============================ */
-/* ============================
-   TRANSLATE PANEL SPECIFIC STYLES
-   ============================ */
-
-.translate-panel {
-  display: flex;
-  flex-direction: column;
-  height: 100%;
-  padding: 25px 20px 20px 20px; /* This adds padding to the top to prevent the title from sticking to the roof */
-  box-sizing: border-box;
-  gap: 16px;
-}
-
-.translate-panel h2 {
-  font-size: 1.1em;
-  font-weight: 600;
-  color: var(--text-primary);
-  margin-top: 0;
-  padding-bottom: 10px;
-  border-bottom: 1px solid var(--border-color);
-  flex-shrink: 0;
-}
-
-.translate-box {
-  background-color: var(--background);
-  border: 1px solid var(--border-color);
-  border-radius: 8px;
-  padding: 12px 16px;
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-}
-
-.translate-box h3 {
-  margin: 0;
-  font-size: 0.8em;
-  font-weight: 600;
-  color: var(--text-secondary);
-  text-transform: uppercase;
-  letter-spacing: 0.5px;
-}
-
-.translate-box p {
-  margin: 0;
-  font-size: 0.95em;
-  line-height: 1.6;
-  color: var(--text-primary);
-  word-break: break-word;
-  white-space: pre-wrap;
-}
-
-.translate-box.source-text {
-  max-height: 150px;      /* Limits the maximum height of the box */
-  overflow-y: auto;       /* This adds the scrollbar when content is too long */
-  flex-shrink: 0;
-}
-
-.translate-action-bar {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  gap: 15px;
-  flex-shrink: 0;
-}
-
-.translate-action-bar .quiz-button {
-  margin: 0;
-  padding: 10px 25px;
-  width: auto;
-  flex-grow: 0;
-}
-
-.translate-results {
-  flex-grow: 1;
-  overflow-y: auto;
-  min-height: 0;
-  border-radius: 8px;
-  padding-right: 5px;
-}
-
-.translate-box.translated-text {
-  border-left: 3px solid var(--accent-red);
-}
-
-.translate-nav {
-  display: flex;
-  gap: 10px;
-  align-items: center;
-  padding-top: 10px;
-  border-top: 1px solid var(--border-color);
-  flex-shrink: 0;
-  margin-top: auto;
-}
-
-.translate-nav .nav-button {
-  background: transparent;
-  border: 1px solid var(--border-color);
-  color: var(--text-secondary);
-  padding: 8px;
-  border-radius: 6px;
-  cursor: pointer;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  transition: all 0.2s ease;
-}
-
-.translate-nav .nav-button:hover {
-  border-color: var(--accent-red);
-  color: var(--accent-red);
-}
-
-.translate-nav .nav-button:disabled {
-  opacity: 0.4;
-  cursor: not-allowed;
-  border-color: var(--border-color);
-  color: var(--text-secondary);
-}
-
-.translate-nav .translation-count {
-  color: var(--text-secondary);
-  font-size: 0.9em;
-  font-weight: 500;
-  text-align: center;
-  flex-grow: 1; /* This centers the count between the buttons */
-}
-
-
-/* ============================
-   (End of Translate Panel Styles)
-   ============================ */
-
-/* Ensure long lines wrap */
+.translate-panel { padding: 25px 20px 20px 20px; box-sizing: border-box; gap: 16px; }
+.translate-panel h2 { padding-bottom: 10px; border-bottom: 1px solid var(--border-color); }
+.translate-box { background-color: var(--background); border: 1px solid var(--border-color); border-radius: 8px; padding: 12px 16px; display: flex; flex-direction: column; gap: 4px; }
+.translate-box h3 { margin: 0; font-size: 0.8em; font-weight: 600; color: var(--text-secondary); text-transform: uppercase; letter-spacing: 0.5px; }
+.translate-box p { margin: 0; font-size: 0.95em; line-height: 1.6; color: var(--text-primary); word-break: break-word; white-space: pre-wrap; }
+.translate-box.source-text { max-height: 150px; overflow-y: auto; flex-shrink: 0; }
+.translate-action-bar { display: flex; justify-content: center; align-items: center; gap: 15px; flex-shrink: 0; }
+.translate-action-bar .quiz-button { margin: 0; padding: 10px 25px; width: auto; flex-grow: 0; }
+.translate-results { flex-grow: 1; overflow-y: auto; min-height: 0; border-radius: 8px; padding-right: 5px; }
+.translate-box.translated-text { border-left: 3px solid var(--accent-red); }
+.translate-nav { display: flex; gap: 10px; align-items: center; padding-top: 10px; border-top: 1px solid var(--border-color); flex-shrink: 0; margin-top: auto; }
+.translate-nav .nav-button { background: transparent; border: 1px solid var(--border-color); color: var(--text-secondary); padding: 8px; border-radius: 6px; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s ease; }
+.translate-nav .nav-button:hover { border-color: var(--accent-red); color: var(--accent-red); }
+.translate-nav .nav-button:disabled { opacity: 0.4; cursor: not-allowed; border-color: var(--border-color); color: var(--text-secondary); }
+.translate-nav .translation-count { color: var(--text-secondary); font-size: 0.9em; font-weight: 500; text-align: center; flex-grow: 1; }
 .translate-panel p { word-break: break-word; white-space: pre-wrap; }
 
-/* small responsiveness: right panel becomes narrower on small screens */
+/* MODIFIED: Updated responsive styles */
 @media (max-width: 1100px) {
   .main-content { grid-template-columns: 220px 1fr 320px; }
+  .main-content.sidebar-hidden { grid-template-columns: 0 1fr 320px; }
 }
 
 @media (max-width: 800px) {
   .main-content { grid-template-columns: 1fr; }
-  .right-panel { display: none; } /* hide right panel on very small screens */
+  .right-panel { display: none; } 
 }
