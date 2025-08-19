@@ -72,39 +72,40 @@ ADOBE-FINAL-ROUND-MAIN/
 5. Setup & Running (Dockerized)
 🔧 Prerequisites
 ```
-Install Docker Desktop
+## Install Docker Desktop
 
-API Keys:
+### API Keys:
 
 Google Gemini (LLM)
 
 Azure Cognitive Services (TTS)
 
-📌 Step 1: Clone the Repository
-git clone https://github.com/rishavraj24/pdf-insights-engine.git
-cd pdf-insights-engine
+### 📌 Step 1: Clone the Repository
+git clone https://github.com/v3cord/Adobe-final-round.git
+cd Adobe-final-round
 
-📌 Step 2: Build Docker Image
+### 📌 Step 2: Build Docker Image
 docker build -t pdf-reader-app .
 
-📌 Step 3: Run the Container
+### 📌 Step 3: Run the Container
 docker run -p 8080:8080 \
   -e GEMINI_API_KEY="YOUR_GEMINI_API_KEY_HERE" \
   -e AZURE_TTS_KEY="YOUR_AZURE_TTS_KEY_HERE" \
   -e AZURE_TTS_ENDPOINT="YOUR_AZURE_TTS_ENDPOINT_HERE" \
   pdf-reader-app
 
-📌 Step 4: Access Application
+### 📌 Step 4: Access Application
 
 👉 Open browser at:
 http://localhost:8080
 
-🔑 6. Environment Variables
+## 🔑 6. Environment Variables
 Variable	Description
 GEMINI_API_KEY	API key for Google Gemini LLM
 AZURE_TTS_KEY	API key for Azure Cognitive Speech Services
 AZURE_TTS_ENDPOINT	Full endpoint URL including region
-👨‍💻 7. Future Enhancements
+
+## 👨‍💻 7. Future Enhancements
 
 Support for more languages in translation.
 
