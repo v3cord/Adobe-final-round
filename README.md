@@ -1,71 +1,58 @@
-📖 PDF Reader & AI Insights Engine
+# 📖 PDF Reader & AI Insights Engine  
 
-An intelligent, web-based reading experience that transforms passive document consumption into active, insightful, and accelerated learning.
+An intelligent, web-based reading experience that transforms passive document consumption into **active, insightful, and accelerated learning**.  
 
-🚀 1. Problem & Vision
+---
 
-In today’s age of information overload, professionals and researchers are buried under mountains of digital documents. Extracting insights, finding connections, and making sense of data is manual, time-consuming, and inefficient.
+## 🚀 1. Problem & Vision  
+In today’s age of **information overload**, professionals and researchers are buried under mountains of digital documents. Extracting insights, finding connections, and making sense of data is **manual, time-consuming, and inefficient**.  
 
-👉 Our vision is to solve this by building a smart PDF reader with AI-powered insights:
+👉 Our vision is to solve this by building a **smart PDF reader with AI-powered insights**:  
+- Connect the dots across multiple documents.  
+- Deliver knowledge beyond the page.  
+- Convert insights into **audio podcasts** for on-the-go learning.  
 
-Connect the dots across multiple documents.
+---
 
-Deliver knowledge beyond the page.
+## ✨ 2. Key Features  
 
-Convert insights into audio podcasts for on-the-go learning.
+### 📚 Core Document Handling  
+- **Bulk PDF Upload & Library** → Upload multiple PDFs into a **personal searchable library**.  
+- **High-Fidelity Viewer** → Smooth, responsive PDF viewer with **page navigation, scrolling, zoom in/out**, and **full screen mode**.  
+- **Day/Night/Reading Mode** → Adjustable **blue light filter** for eye comfort.  
 
-✨ 2. Key Features
-📚 Core Document Handling
+### 🤖 AI-Powered Analysis & Interaction  
+- **🔗 Connect the Dots** → Select text in one doc and instantly see up to **5 related snippets** across your library.  
+- **💬 Chat with Your Docs** → Ask natural language questions, get synthesized answers.  
+- **💡 AI Insights Bulb (Powered by Google Gemini)**  
+  - 🔑 Key Insights → Concise summaries.  
+  - 💡 Did You Know? → Surprising facts.  
+  - 🤔 Contradictions → Counterpoints & critical thinking.  
+  - 🔗 Connections → Broader context & themes.  
 
-Bulk PDF Upload & Library → Upload multiple PDFs into a personal searchable library.
+### 🎯 Engagement & Learning Tools  
+- **🎧 Podcast Mode** → AI-generated narrated audio insights (**speed & volume adjustable**).  
+- **🌐 Instant Translation** → Translate any text to **Hindi or French**.  
+- **🧠 Knowledge Quiz** → Auto-generated **MCQs** from document content.  
+- **📽️ AI Presentation** → Auto-create a **5-slide summary presentation**.  
+- **Dynamic Landing Page** → Interactive and modern UI for better user experience.  
 
-High-Fidelity Viewer → Smooth, responsive PDF viewer with page navigation, scrolling, zoom in/out, and full screen mode.
+---
 
-Day/Night/Reading Mode → Adjustable blue light filter for eye comfort.
+## 🛠️ 3. Tech Stack  
 
-🤖 AI-Powered Analysis & Interaction
+- **Frontend** → React.js  
+- **Backend** → Node.js (Express.js)  
+- **PDF Processing** → `react-pdf`, `pdfjs-dist`  
+- **AI Language Model** → Google Gemini  
+- **Text-to-Speech** → Azure Cognitive Services  
+- **Containerization** → Docker  
 
-🔗 Connect the Dots → Select text in one doc and instantly see up to 5 related snippets across your library.
+---
 
-💬 Chat with Your Docs → Ask natural language questions, get synthesized answers.
+## 📂 4. Project Structure  
 
-💡 AI Insights Bulb (Powered by Google Gemini)
-
-🔑 Key Insights → Concise summaries.
-
-💡 Did You Know? → Surprising facts.
-
-🤔 Contradictions → Counterpoints & critical thinking.
-
-🔗 Connections → Broader context & themes.
-
-🎯 Engagement & Learning Tools
-
-🎧 Podcast Mode → AI-generated narrated audio insights (speed & volume adjustable).
-
-🌐 Instant Translation → Translate any text to Hindi or French.
-
-🧠 Knowledge Quiz → Auto-generated MCQs from document content.
-
-📽️ AI Presentation → Auto-create a 5-slide summary presentation.
-
-Dynamic Landing Page → Interactive and modern UI for better user experience.
-
-🛠️ 3. Tech Stack
-
-Frontend → React.js
-
-Backend → Node.js (Express.js)
-
-PDF Processing → react-pdf, pdfjs-dist
-
-AI Language Model → Google Gemini
-
-Text-to-Speech → Azure Cognitive Services
-
-Containerization → Docker
-
-📂 4. Project Structure
+```bash
 ADOBE-FINAL-ROUND-MAIN/
 │── client/              # Frontend (React.js)
 │   ├── public/
@@ -82,8 +69,7 @@ ADOBE-FINAL-ROUND-MAIN/
 │── Dockerfile           # Container setup
 │── README.md            # Project documentation
 │── .gitignore
-
-⚡ 5. Setup & Running (Dockerized)
+5. Setup & Running (Dockerized)
 🔧 Prerequisites
 
 Install Docker Desktop
@@ -95,8 +81,8 @@ Google Gemini (LLM)
 Azure Cognitive Services (TTS)
 
 📌 Step 1: Clone the Repository
-git clone https://github.com/v3cord/Adobe-final-round.git
-cd Adobe-final-round
+git clone https://github.com/rishavraj24/pdf-insights-engine.git
+cd pdf-insights-engine
 
 📌 Step 2: Build Docker Image
 docker build -t pdf-reader-app .
