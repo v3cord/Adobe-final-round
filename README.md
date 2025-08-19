@@ -71,7 +71,7 @@ ADOBE-FINAL-ROUND-MAIN/
 │── .gitignore
 5. Setup & Running (Dockerized)
 🔧 Prerequisites
-
+```
 Install Docker Desktop
 
 API Keys:
