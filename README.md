@@ -18,7 +18,7 @@ In today’s age of **information overload**, professionals and researchers are 
 
 ### 📚 Core Document Handling  
 - **Bulk PDF Upload & Library** → Upload multiple PDFs into a **personal searchable library**.  
-- **High-Fidelity Viewer** → Smooth, responsive PDF viewer with **page navigation, scrolling, zoom in/out**, and **full screen mode**.  
+- **High-Fidelity Viewer** → Smooth, responsive PDF viewer with **page navigation, scrolling, zoom in/out**.  
 - **Day/Night/Reading Mode** → Adjustable **blue light filter** for eye comfort.  
 
 ### 🤖 AI-Powered Analysis & Interaction  
@@ -88,11 +88,7 @@ cd Adobe-final-round
 docker build -t pdf-reader-app .
 
 ### 📌 Step 3: Run the Container
-docker run -p 8080:8080 \
-  -e GEMINI_API_KEY="YOUR_GEMINI_API_KEY_HERE" \
-  -e AZURE_TTS_KEY="YOUR_AZURE_TTS_KEY_HERE" \
-  -e AZURE_TTS_ENDPOINT="YOUR_AZURE_TTS_ENDPOINT_HERE" \
-  pdf-reader-app
+docker run -e GEMINI_API_KEY="YOUR_GEMINI_API_KEY_HERE" -e AZURE_TTS_KEY="YOUR_AZURE_TTS_KEY_HERE" -e AZURE_TTS_ENDPOINT="YOUR_AZURE_TTS_ENDPOINT_HERE" -p 8080:8080 pdf-reader-app
 
 ### 📌 Step 4: Access Application
 
