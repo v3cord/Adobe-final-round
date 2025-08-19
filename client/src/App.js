@@ -64,12 +64,13 @@ const InsightCard = ({ title, content, icon }) => (
   </div>
 );
 
-const LandingPage = ({ onLaunch }) => (
-  <div className="landing-page">
-    <div className="landing-content">
-      <h1>Welcome to the House of Wonders</h1>
-      <p>Step into a new era of document analysis. Discover hidden connections, generate intelligent insights, and test your knowledge with AI-powered tools.</p>
-      <button onClick={onLaunch} className="launch-button">Launch Engine</button>
+// PASTE THIS NEW COMPONENT
+const LandingPage = ({ onStart }) => (
+  <div className="hero-section">
+    <div className="title-container">
+      <h1>MUNIX</h1>
+      {/* THIS LINE IS NOW CORRECTED */}
+      <button className="pulsating-button" onClick={onStart}>GET STARTED</button>
     </div>
   </div>
 );
@@ -82,7 +83,7 @@ const AppHeader = ({ onFileChange, onToggleSidebar, theme, onThemeChange, readin
         <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3 12H21" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/><path d="M3 6H21" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/><path d="M3 18H21" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
       </button>
       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M14 2H6C4.89543 2 4 2.89543 4 4V20C4 21.1046 4.89543 22 6 22H18C19.1046 22 20 21.1046 20 20V8L14 2Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /><path d="M14 2V8H20" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>
-      <h1>Insights Engine</h1>
+      <h1>Munix</h1>
     </div>
     <ThemeSwitcher 
         theme={theme} 
@@ -98,7 +99,7 @@ const AppHeader = ({ onFileChange, onToggleSidebar, theme, onThemeChange, readin
   </header>
 );
 
-const Sidebar = ({ documentLibrary, activeFile, handleFileSelect, uploadStatus }) => (
+const Sidebar = ({ documentLibrary, activeFile, handleFileSelect, uploadStatus, handleRemoveDocument }) => (
   <aside className="sidebar">
     <h2>
       Document Library
@@ -110,7 +111,17 @@ const Sidebar = ({ documentLibrary, activeFile, handleFileSelect, uploadStatus }
           className={`document-item ${activeFile && file.id === activeFile.id ? 'active' : ''}`}
           onClick={() => handleFileSelect(file.id)}
         >
-          {file.name}
+          <span className="document-name">{file.name}</span>
+          <button
+            className="remove-doc-button"
+            title="Remove document"
+            onClick={(e) => {
+              e.stopPropagation(); // Prevents the li's onClick from firing
+              handleRemoveDocument(file.id);
+            }}
+          >
+            &times;
+          </button>
         </li>
       ))}
     </ul>
@@ -118,24 +129,26 @@ const Sidebar = ({ documentLibrary, activeFile, handleFileSelect, uploadStatus }
   </aside>
 );
 
-const Viewer = ({ activeFile, numPages, onDocumentLoadSuccess, handleTextSelection, viewerContainerRef, scale }) => (
-  <main className="viewer-container" ref={viewerContainerRef} style={{ overflowY: 'auto' }}>
+const Viewer = ({ activeFile, numPages, onDocumentLoadSuccess, handleTextSelection, viewerContainerRef, scale, toggleFullScreen }) => (
+  <main className="viewer-container" ref={viewerContainerRef}>
     {activeFile ? (
-      <div className="pdf-display-area" onMouseUp={handleTextSelection}>
-        <Document
-          key={activeFile.id}
-          file={activeFile.url}
-          onLoadSuccess={onDocumentLoadSuccess}
-          loading={<div className="loader"></div>}
-          error={<div className="error-placeholder">Failed to load PDF.</div>}
-        >
-          {Array.from(new Array(numPages || 0), (el, index) => (
-            <div key={`page_wrapper_${index + 1}`} id={`page-${index + 1}`} data-page-number={index + 1}>
-              <Page pageNumber={index + 1} renderTextLayer={true} scale={scale} />
-            </div>
-          ))}
-        </Document>
-      </div>
+      <>
+        <div className="pdf-display-area" onMouseUp={handleTextSelection}>
+          <Document
+            key={activeFile.id}
+            file={activeFile.url}
+            onLoadSuccess={onDocumentLoadSuccess}
+            loading={<div className="loader"></div>}
+            error={<div className="error-placeholder">Failed to load PDF.</div>}
+          >
+            {Array.from(new Array(numPages || 0), (el, index) => (
+              <div key={`page_wrapper_${index + 1}`} id={`page-${index + 1}`} data-page-number={index + 1}>
+                <Page pageNumber={index + 1} renderTextLayer={true} scale={scale} />
+              </div>
+            ))}
+          </Document>
+        </div>
+      </>
     ) : (
       <div className="placeholder">
         <svg width="64" height="64" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M9 17H15" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /><path d="M12 14V17" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /><path d="M12 3C7.02944 3 3 7.02944 3 12C3 16.9706 7.02944 21 12 21C16.9706 21 21 16.9706 21 12C21 7.02944 16.9706 3 12 3Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /><path d="M7.5 10C7.5 8.61929 8.61929 7.5 10 7.5C11.3807 7.5 12.5 8.61929 12.5 10C12.5 11 11.8333 12 11 12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /><path d="M16.5 10C16.5 8.61929 15.3807 7.5 14 7.5C12.6193 7.5 11.5 8.61929 11.5 10C11.5 11 12.1667 12 13 12" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>
@@ -385,7 +398,7 @@ const TranslatePanel = ({ selectedText, isTranslating, translations, currentTran
 /* -------------------------------------------------------------------------- */
 
 const RightPanel = (props) => {
-  const { activeTab, setActiveTab, currentPage, numPages, handleZoomIn, handleZoomOut, hasActiveFile } = props;
+  const { activeTab, setActiveTab, currentPage, numPages, handleZoomIn, handleZoomOut, hasActiveFile, toggleFullScreen } = props;
 
   const renderPanel = () => {
     switch (activeTab) {
@@ -423,6 +436,7 @@ const RightPanel = (props) => {
           <button className={`tab-button ${activeTab === 'translate' ? 'active' : ''}`} onClick={() => setActiveTab('translate')} data-tooltip="Translate">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
           </button>
+          
         </div>
 
         <div className="viewer-controls">
@@ -458,6 +472,7 @@ function App() {
   const [activeFile, setActiveFile] = useState(null);
   const [numPages, setNumPages] = useState(null);
   const [uploadStatus, setUploadStatus] = useState('');
+  const [isFullScreen, setIsFullScreen] = useState(false); // ADD THIS LINE
   const [documentLibrary, setDocumentLibrary] = useState([]);
   
 
@@ -556,6 +571,15 @@ function App() {
 
     return () => observer.disconnect();
   }, [activeFile, numPages]);
+  useEffect(() => {
+    const handleFullScreenChange = () => {
+      setIsFullScreen(!!document.fullscreenElement);
+    };
+
+    document.addEventListener('fullscreenchange', handleFullScreenChange);
+
+    return () => document.removeEventListener('fullscreenchange', handleFullScreenChange);
+  }, []); // Empty dependency array ensures this runs only once
 
   // --- UTILITY FUNCTIONS ---
   const normalizeToOneBasedPage = (recOrPage) => {
@@ -573,6 +597,24 @@ function App() {
   // <-- ADDED: Function to toggle sidebar
   const toggleSidebar = () => {
     setIsSidebarVisible(prev => !prev);
+  };
+  // ADD THESE TWO NEW FUNCTIONS
+  const toggleFullScreen = () => {
+    if (!document.fullscreenElement) {
+      document.documentElement.requestFullscreen();
+    } else {
+      if (document.exitFullscreen) {
+        document.exitFullscreen();
+      }
+    }
+  };
+
+  const handleRemoveDocument = (docIdToRemove) => {
+    // If the currently viewed file is the one being removed, unload it first.
+    if (activeFile?.id === docIdToRemove) {
+      setActiveFile(null);
+    }
+    setDocumentLibrary(docs => docs.filter(doc => doc.id !== docIdToRemove));
   };
 
   // --- DATA FETCHING & EVENT HANDLERS ---
@@ -821,6 +863,7 @@ function App() {
     handleZoomIn,
     handleZoomOut,
     hasActiveFile: !!activeFile,
+    toggleFullScreen, // ADD THIS LINE
     chatProps: { messages, isChatLoading, chatEndRef, handleSendMessage, chatInput, setChatInput, documentLibrary },
     insightsProps: { activeFile, isLoadingInsights, aiInsights, handleGenerateInsights, isLoadingPodcast, podcastUrl, handleGeneratePodcast, isLoadingRecs, recommendations, normalizeToOneBasedPage, handleGoToSource, handleReturnToSource, selectionSource },
     quizProps: { quiz, activeFile, isLoadingQuiz, handleGenerateQuiz, currentQuestionIndex, showAnswer, selectedAnswer, handleAnswerSelect, handleNextQuestion, quizScore },
@@ -830,11 +873,11 @@ function App() {
 
   // --- RENDER ---
   if (appState === 'landing') {
-    return <LandingPage onLaunch={() => setAppState('engine')} />;
+    return <LandingPage onStart={() => setAppState('engine')} />;
   }
 
    return (
-    <div className={`App ${theme}`}>
+    <div className={`App ${theme} ${isFullScreen ? 'fullscreen-mode' : ''}`}>
         {theme === 'reading' && (
             <div
               className="reading-mode-overlay"
@@ -855,6 +898,7 @@ function App() {
           activeFile={activeFile}
           handleFileSelect={handleFileSelect}
           uploadStatus={uploadStatus}
+          handleRemoveDocument={handleRemoveDocument}
         />
         <Viewer
           activeFile={activeFile}
@@ -863,10 +907,26 @@ function App() {
           handleTextSelection={handleTextSelection}
           viewerContainerRef={viewerContainerRef}
           scale={scale}
+          toggleFullScreen={toggleFullScreen}
         />
         <RightPanel {...rightPanelProps} />
       </div>
-    </div>
+        {isFullScreen && activeFile && (
+        <div className="fullscreen-controls">
+            <button onClick={handleZoomOut} title="Zoom Out">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
+            </button>
+            <div className="page-indicator-fs">{currentPage} / {numPages}</div>
+            <button onClick={handleZoomIn} title="Zoom In">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
+            </button>
+            <button onClick={toggleFullScreen} className="exit-fullscreen-button" title="Exit Full Screen">
+                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5 19L19 5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/><path d="M19 19L5 5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+            </button>
+        </div>
+      )}
+      </div>
+    
   );
 }
 
