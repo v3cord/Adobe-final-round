@@ -88,7 +88,6 @@ Azure Cognitive Services (TTS)
 
 ### 📌 Step 1: Clone the Repository
 git clone https://github.com/v3cord/Adobe-final-round.git
-cd Adobe-final-round
 
 ### 📌 Step 2: Build Docker Image
 docker build -t pdf-reader-app .
