@@ -101,7 +101,7 @@ docker run -e GEMINI_API_KEY="YOUR_GEMINI_API_KEY_HERE" -e AZURE_TTS_KEY="YOUR_A
 👉 Open browser at:
 http://localhost:8080
 
-double click "Get Started" on the Landing page.
+double click "Get Started" on the Landing page.(Double click added as a safety feature to prevent misclick)
 ## 🔄 6. Workflow
 
 The application provides a seamless end-to-end reading and insights journey.
@@ -176,3 +176,15 @@ AI-driven mind maps from documents.
 Docker file under 10GB
 
 Buffer memory to remember pdfs read in a seesion (until the server is restarted).
+
+
+## 10. CONTRIBUTORS
+Contact:
+@prakashkumar0001000@gmail.com and @rishav.raj.im@gmail.com
+
+
+
+TEAM NAME
+THE BLACKSWAN
+
+
