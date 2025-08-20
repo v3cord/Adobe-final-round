@@ -101,7 +101,10 @@ docker run -e GEMINI_API_KEY="YOUR_GEMINI_API_KEY_HERE" -e AZURE_TTS_KEY="YOUR_A
 👉 Open browser at:
 http://localhost:8080
 
-double click "Get Started" on the Landing page.(Double click added as a safety feature to prevent misclick)
+Double click "Get Started" on the Landing page.(Double click added as a safety feature to prevent misclick)
+
+Your interactive AI integrated pdf reader opens up. 
+Enjoy reading.
 ## 🔄 6. Workflow
 
 The application provides a seamless end-to-end reading and insights journey.
