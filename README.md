@@ -102,14 +102,66 @@ docker run -e GEMINI_API_KEY="YOUR_GEMINI_API_KEY_HERE" -e AZURE_TTS_KEY="YOUR_A
 http://localhost:8080
 
 double click "Get Started" on the Landing page.
+## 🔄 6. Workflow
 
-## 🔑 6. Environment Variables
+The application provides a seamless end-to-end reading and insights journey.
+
+Landing Page → Get Started
+
+Double-click Get Started on the landing page to enter the main application.
+
+Upload & Manage PDFs
+
+Click on Add PDFs to upload one or multiple documents into your library.
+
+Select any PDF from the library to open it in the reader.
+
+Smart Reading Experience
+
+Text Selection → Related Sections
+
+Highlight any text to instantly generate related sections across your library.
+
+Each related snippet shows its page number and has a Go to Source button that takes you directly to the exact page in the source document.
+
+A Return Button allows you to go back to the previously opened PDF.
+
+Reading Modes
+
+Choose from Day Mode, Night Mode, or Blue Light Filter Mode with an adjustable comfort bar.
+
+Zoom & Fullscreen
+
+Zoom in/out with the +/- controls.
+
+Switch to distraction-free reading with the Fullscreen button.
+
+AI-Powered Features
+
+Chat with Document (First Icon) → Ask questions and receive AI-generated answers synthesized across all uploaded documents.
+
+Translation
+
+Select any text, move to the Translate section, and generate translations in Hindi and French.
+
+Use the Right Arrow button to toggle between translations.
+
+Knowledge Quiz → Automatically generate MCQs from document content.
+
+AI Presentation → Create a concise 5-slide auto-generated presentation, with Next/Previous navigation for slides.
+
+Engagement Beyond Reading
+
+Generate offline extractable insights with reference to source documents.
+
+Use Podcast Mode for AI-narrated audio insights, adjustable for speed and volume
+## 🔑 7. Environment Variables
 Variable	Description
 GEMINI_API_KEY	API key for Google Gemini LLM
 AZURE_TTS_KEY	API key for Azure Cognitive Speech Services
 AZURE_TTS_ENDPOINT	Full endpoint URL including region
 
-## 👨‍💻 7. Future Enhancements
+## 👨‍💻 8. Future Enhancements
 
 Support for more languages in translation.
 
@@ -119,7 +171,7 @@ Advanced note-taking & annotation system.
 
 AI-driven mind maps from documents.
 
-## 8. Special mention
+## 9. Special mention
 
 Docker file under 10GB
 
