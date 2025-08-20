@@ -18,14 +18,14 @@ const ThemeSwitcher = ({ theme, onThemeChange, readingIntensity, onIntensityChan
         onClick={() => onThemeChange('day')}
         title="Day Mode"
       >
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 17C14.7614 17 17 14.7614 17 12C17 9.23858 14.7614 7 12 7C9.23858 7 7 9.23858 7 12C7 14.7614 9.23858 17 12 17Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/><path d="M12 1V3" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/><path d="M12 21V23" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/><path d="M4.22 4.22L5.64 5.64" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/><path d="M18.36 18.36L19.78 19.78" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/><path d="M1 4.22L2.12 5.64" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/><path d="M18.36 5.64L19.78 4.22" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/><path d="M1 12H3" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/><path d="M21 12H23" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/><path d="M4.22 19.78L5.64 18.36" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/><path d="M18.36 19.78L19.78 18.36" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M12 17C14.7614 17 17 14.7614 17 12C17 9.23858 14.7614 7 12 7C9.23858 7 7 9.23858 7 12C7 14.7614 9.23858 17 12 17Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /><path d="M12 1V3" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /><path d="M12 21V23" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /><path d="M4.22 4.22L5.64 5.64" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /><path d="M18.36 18.36L19.78 19.78" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /><path d="M1 4.22L2.12 5.64" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /><path d="M18.36 5.64L19.78 4.22" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /><path d="M1 12H3" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /><path d="M21 12H23" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /><path d="M4.22 19.78L5.64 18.36" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /><path d="M18.36 19.78L19.78 18.36" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>
       </button>
       <button
         className={`theme-btn ${theme === 'night' ? 'active' : ''}`}
         onClick={() => onThemeChange('night')}
         title="Night Mode"
       >
-       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M21 12.79C21 17.02 17.52 20.5 13.29 20.5C10.93 20.5 8.81 19.45 7.4 17.88C7.31 17.76 7.22 17.64 7.12 17.52C4.14 15.17 3.5 11.23 4.93 7.82C6.35 4.41 9.77 2.5 13.29 2.5C13.5 2.5 13.71 2.5 13.91 2.52C13.88 3.54 14.24 4.53 14.9 5.31C16.44 6.99 18.66 7.55 20.61 6.83C20.84 8.7 21 10.7 21 12.79Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M21 12.79C21 17.02 17.52 20.5 13.29 20.5C10.93 20.5 8.81 19.45 7.4 17.88C7.31 17.76 7.22 17.64 7.12 17.52C4.14 15.17 3.5 11.23 4.93 7.82C6.35 4.41 9.77 2.5 13.29 2.5C13.5 2.5 13.71 2.5 13.91 2.52C13.88 3.54 14.24 4.53 14.9 5.31C16.44 6.99 18.66 7.55 20.61 6.83C20.84 8.7 21 10.7 21 12.79Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>
       </button>
       <div className="reading-mode-controls">
         <button
@@ -33,7 +33,7 @@ const ThemeSwitcher = ({ theme, onThemeChange, readingIntensity, onIntensityChan
           onClick={() => onThemeChange('reading')}
           title="Reading Mode"
         >
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2V3z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7V3z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M2 3h6a4 4 0 0 1 4 4v14a3 3 0 0 0-3-3H2V3z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /><path d="M22 3h-6a4 4 0 0 0-4 4v14a3 3 0 0 1 3-3h7V3z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>
         </button>
         {theme === 'reading' && (
           <input
@@ -75,21 +75,21 @@ const LandingPage = ({ onStart }) => (
   </div>
 );
 
-const AppHeader = ({ onFileChange, onToggleSidebar, theme, onThemeChange, readingIntensity, onIntensityChange  }) => (
+const AppHeader = ({ onFileChange, onToggleSidebar, theme, onThemeChange, readingIntensity, onIntensityChange }) => (
   <header className="App-header">
     <div className="logo">
-      
+
       <button onClick={onToggleSidebar} className="sidebar-toggle-button">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3 12H21" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/><path d="M3 6H21" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/><path d="M3 18H21" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M3 12H21" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /><path d="M3 6H21" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /><path d="M3 18H21" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>
       </button>
       <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M14 2H6C4.89543 2 4 2.89543 4 4V20C4 21.1046 4.89543 22 6 22H18C19.1046 22 20 21.1046 20 20V8L14 2Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /><path d="M14 2V8H20" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>
       <h1>Munix</h1>
     </div>
-    <ThemeSwitcher 
-        theme={theme} 
-        onThemeChange={onThemeChange}
-        readingIntensity={readingIntensity}
-        onIntensityChange={onIntensityChange}
+    <ThemeSwitcher
+      theme={theme}
+      onThemeChange={onThemeChange}
+      readingIntensity={readingIntensity}
+      onIntensityChange={onIntensityChange}
     />
     <label htmlFor="file-upload" className="file-upload-label">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M21 15V19C21 19.5304 20.7893 20.0391 20.4142 20.4142C20.0391 20.7893 19.5304 21 19 21H5C4.46957 21 3.96086 20.7893 3.58579 20.4142C3.21071 20.0391 3 19.5304 3 19V15" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /><path d="M17 8L12 3L7 8" stroke="white" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /><path d="M12 3V15" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>
@@ -129,23 +129,24 @@ const Sidebar = ({ documentLibrary, activeFile, handleFileSelect, uploadStatus, 
   </aside>
 );
 
-const Viewer = ({ activeFile, numPages, onDocumentLoadSuccess, handleTextSelection, viewerContainerRef, scale, toggleFullScreen }) => (
+const Viewer = ({ activeFile, numPages, onDocumentLoadSuccess, handleTextSelection, viewerContainerRef, scale, isFullScreen }) => (
   <main className="viewer-container" ref={viewerContainerRef}>
     {activeFile ? (
       <>
         <div className="pdf-display-area" onMouseUp={handleTextSelection}>
           <Document
-            key={activeFile.id}
+            key={`${activeFile.id}-${isFullScreen}`}
             file={activeFile.url}
             onLoadSuccess={onDocumentLoadSuccess}
             loading={<div className="loader"></div>}
             error={<div className="error-placeholder">Failed to load PDF.</div>}
           >
-            {Array.from(new Array(numPages || 0), (el, index) => (
+            {Array.from(new Array(numPages), (el, index) => (
               <div key={`page_wrapper_${index + 1}`} id={`page-${index + 1}`} data-page-number={index + 1}>
                 <Page pageNumber={index + 1} renderTextLayer={true} scale={scale} />
               </div>
             ))}
+
           </Document>
         </div>
       </>
@@ -436,7 +437,11 @@ const RightPanel = (props) => {
           <button className={`tab-button ${activeTab === 'translate' ? 'active' : ''}`} onClick={() => setActiveTab('translate')} data-tooltip="Translate">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="12" cy="12" r="10"></circle><line x1="2" y1="12" x2="22" y2="12"></line><path d="M12 2a15.3 15.3 0 0 1 4 10 15.3 15.3 0 0 1-4 10 15.3 15.3 0 0 1-4-10 15.3 15.3 0 0 1 4-10z"></path></svg>
           </button>
-          
+          <button className="tab-button" onClick={props.toggleFullScreen} data-tooltip="Full Screen">
+            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+              <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path>
+            </svg>
+          </button>
         </div>
 
         <div className="viewer-controls">
@@ -446,6 +451,7 @@ const RightPanel = (props) => {
           <div className="page-indicator">
             {hasActiveFile ? `${currentPage} / ${numPages}` : '- / -'}
           </div>
+
           <button className="tab-button" data-tooltip="Zoom Out" onClick={handleZoomOut} disabled={!hasActiveFile}>
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
           </button>
@@ -474,23 +480,16 @@ function App() {
   const [uploadStatus, setUploadStatus] = useState('');
   const [isFullScreen, setIsFullScreen] = useState(false); // ADD THIS LINE
   const [documentLibrary, setDocumentLibrary] = useState([]);
-  
-
   const [recommendations, setRecommendations] = useState([]);
   const [isLoadingRecs, setIsLoadingRecs] = useState(false);
-
   const [aiInsights, setAiInsights] = useState(null);
   const [isLoadingInsights, setIsLoadingInsights] = useState(false);
-
   const [podcastUrl, setPodcastUrl] = useState(null);
   const [isLoadingPodcast, setIsLoadingPodcast] = useState(false);
-
   const [activeTab, setActiveTab] = useState('chat');
-
   const [messages, setMessages] = useState([]);
   const [chatInput, setChatInput] = useState('');
   const [isChatLoading, setIsChatLoading] = useState(false);
-
   const [quiz, setQuiz] = useState(null);
   const [isLoadingQuiz, setIsLoadingQuiz] = useState(false);
   const [currentQuestionIndex, setCurrentQuestionIndex] = useState(0);
@@ -517,6 +516,7 @@ function App() {
   const viewerContainerRef = useRef(null);
   const chatEndRef = useRef(null);
 
+  // --- EFFECTS ---
   // --- EFFECTS ---
   useEffect(() => {
     chatEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -552,34 +552,31 @@ function App() {
     if (!viewer || !numPages) return;
 
     const options = {
-      root: viewer,
+      root: isFullScreen ? null : viewer,
       rootMargin: '0px',
-      threshold: 0.2
+      // 1. LOWERED THE THRESHOLD: Detects page visibility much sooner.
+      threshold: 0.1
     };
 
     const observer = new IntersectionObserver((entries) => {
-      entries.forEach(entry => {
-        if (entry.isIntersecting) {
-          const pageNum = parseInt(entry.target.dataset.pageNumber, 10);
-          setCurrentPage(pageNum);
-        }
-      });
+      // 2. IMPROVED LOGIC: Find all pages currently intersecting with the viewer.
+      const visiblePages = entries
+        .filter(entry => entry.isIntersecting)
+        .map(entry => parseInt(entry.target.dataset.pageNumber, 10));
+
+      // If there are any visible pages, update the state to the highest page number.
+      // This correctly reflects the page the user has scrolled to.
+      if (visiblePages.length > 0) {
+        setCurrentPage(Math.max(...visiblePages));
+      }
     }, options);
 
     const pageElements = viewer.querySelectorAll('div[id^="page-"]');
     pageElements.forEach(page => observer.observe(page));
 
     return () => observer.disconnect();
-  }, [activeFile, numPages]);
-  useEffect(() => {
-    const handleFullScreenChange = () => {
-      setIsFullScreen(!!document.fullscreenElement);
-    };
+  }, [activeFile, numPages, isFullScreen]);
 
-    document.addEventListener('fullscreenchange', handleFullScreenChange);
-
-    return () => document.removeEventListener('fullscreenchange', handleFullScreenChange);
-  }, []); // Empty dependency array ensures this runs only once
 
   // --- UTILITY FUNCTIONS ---
   const normalizeToOneBasedPage = (recOrPage) => {
@@ -593,22 +590,69 @@ function App() {
     }
     return 1;
   };
-  
+
   // <-- ADDED: Function to toggle sidebar
   const toggleSidebar = () => {
     setIsSidebarVisible(prev => !prev);
   };
-  // ADD THESE TWO NEW FUNCTIONS
+
   const toggleFullScreen = () => {
-    if (!document.fullscreenElement) {
-      document.documentElement.requestFullscreen();
+    const doc = window.document;
+    const docEl = document.documentElement;
+
+    const requestFullScreen = docEl.requestFullscreen || docEl.mozRequestFullScreen || docEl.webkitRequestFullScreen || docEl.msRequestFullscreen;
+    const cancelFullScreen = doc.exitFullscreen || doc.mozCancelFullScreen || doc.webkitExitFullscreen || doc.msExitFullscreen;
+
+    if (!doc.fullscreenElement && !doc.mozFullScreenElement && !doc.webkitFullscreenElement && !doc.msFullscreenElement) {
+      if (requestFullScreen) {
+        requestFullScreen.call(docEl);
+      }
     } else {
-      if (document.exitFullscreen) {
-        document.exitFullscreen();
+      if (cancelFullScreen) {
+        cancelFullScreen.call(doc);
       }
     }
   };
+  useEffect(() => {
+    // When entering or exiting fullscreen, ensure the viewer scrolls to the top.
+    if (viewerContainerRef.current) {
+      viewerContainerRef.current.scrollTop = 0;
+    }
+  }, [isFullScreen]);
 
+  // REPLACE your old fullscreen change listener hook with this one
+
+  useEffect(() => {
+    // This function now checks all browser-specific properties
+    const handleFullScreenChange = () => {
+      const is_full = !!(
+        document.fullscreenElement ||
+        document.webkitFullscreenElement ||
+        document.mozFullScreenElement ||
+        document.msFullscreenElement
+      );
+      setIsFullScreen(is_full);
+    };
+
+    // We add listeners for all possible event names
+    const events = [
+      "fullscreenchange",
+      "webkitfullscreenchange",
+      "mozfullscreenchange",
+      "msfullscreenchange",
+    ];
+
+    events.forEach(event => {
+      document.addEventListener(event, handleFullScreenChange);
+    });
+
+    // The cleanup function removes all the listeners
+    return () => {
+      events.forEach(event => {
+        document.removeEventListener(event, handleFullScreenChange);
+      });
+    };
+  }, []); // Empty dependency array means this runs only once
   const handleRemoveDocument = (docIdToRemove) => {
     // If the currently viewed file is the one being removed, unload it first.
     if (activeFile?.id === docIdToRemove) {
@@ -781,8 +825,8 @@ function App() {
         options: Array.isArray(q?.options) ? q.options : (Array.isArray(q?.choices) ? q.choices : []),
         correctAnswer: q?.correctAnswer ?? q?.answer ?? q?.correct ?? null
       }))
-      // keep only well-formed items
-      .filter(q => q.question && Array.isArray(q.options) && q.options.length > 0 && q.correctAnswer !== null);
+        // keep only well-formed items
+        .filter(q => q.question && Array.isArray(q.options) && q.options.length > 0 && q.correctAnswer !== null);
 
       setQuiz(normalized);
       setCurrentQuestionIndex(0);
@@ -873,19 +917,22 @@ function App() {
 
   // --- RENDER ---
   if (appState === 'landing') {
-    return <LandingPage onStart={() => setAppState('engine')} />;
+    return <LandingPage onStart={() => {
+      console.log("Get Started button was clicked!"); // <-- ADD IT HERE
+      setAppState('engine');
+    }} />;
   }
 
-   return (
+  return (
     <div className={`App ${theme} ${isFullScreen ? 'fullscreen-mode' : ''}`}>
-        {theme === 'reading' && (
-            <div
-              className="reading-mode-overlay"
-              style={{ opacity: readingIntensity / 100 * 0.4 }} // Max opacity of 40%
-            ></div>
-        )}
-      <AppHeader 
-        onFileChange={onFileChange} 
+      {theme === 'reading' && (
+        <div
+          className="reading-mode-overlay"
+          style={{ opacity: readingIntensity / 100 * 0.4 }} // Max opacity of 40%
+        ></div>
+      )}
+      <AppHeader
+        onFileChange={onFileChange}
         onToggleSidebar={toggleSidebar}
         theme={theme}
         onThemeChange={setTheme}
@@ -907,26 +954,30 @@ function App() {
           handleTextSelection={handleTextSelection}
           viewerContainerRef={viewerContainerRef}
           scale={scale}
-          toggleFullScreen={toggleFullScreen}
+          isFullScreen={isFullScreen}
         />
         <RightPanel {...rightPanelProps} />
       </div>
-        {isFullScreen && activeFile && (
+
+
+      {isFullScreen && activeFile && (
         <div className="fullscreen-controls">
-            <button onClick={handleZoomOut} title="Zoom Out">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
-            </button>
-            <div className="page-indicator-fs">{currentPage} / {numPages}</div>
-            <button onClick={handleZoomIn} title="Zoom In">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
-            </button>
-            <button onClick={toggleFullScreen} className="exit-fullscreen-button" title="Exit Full Screen">
-                <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5 19L19 5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/><path d="M19 19L5 5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
-            </button>
+          <button onClick={handleZoomOut} title="Zoom Out">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
+          </button>
+
+          {/* ADD THIS DIV FOR THE PAGE INDICATOR */}
+
+
+          <button onClick={handleZoomIn} title="Zoom In">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line><line x1="11" y1="8" x2="11" y2="14"></line><line x1="8" y1="11" x2="14" y2="11"></line></svg>
+          </button>
+          <button onClick={toggleFullScreen} className="exit-fullscreen-button" title="Exit Full Screen">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M5 19L19 5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /><path d="M19 19L5 5" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" /></svg>
+          </button>
         </div>
       )}
-      </div>
-    
+    </div>
   );
 }
 

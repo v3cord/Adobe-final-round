@@ -108,7 +108,20 @@ app.post('/upload', upload.array('files'), async (req, res) => {
         return res.status(400).send({ message: 'No files were uploaded.' });
     }
 
+    let newFilesProcessed = 0;
+
     for (const file of req.files) {
+        // --- DUPLICATE CHECK ---
+        // Check if a document with the same original name already exists in the store.
+        const isDuplicate = Array.from(documentStore.values()).some(doc => doc.originalName === file.originalname);
+
+        // If it's a duplicate, log it and skip to the next file in the loop.
+        if (isDuplicate) {
+            console.log(`Skipping duplicate file: ${file.originalname}`);
+            continue; // Go to the next iteration of the loop
+        }
+        // --- END DUPLICATE CHECK ---
+
         try {
             const dataBuffer = fs.readFileSync(file.path);
             const uint8Array = new Uint8Array(dataBuffer);
@@ -127,6 +140,7 @@ app.post('/upload', upload.array('files'), async (req, res) => {
                 pageCount
             };
             documentStore.set(newDocument.id, newDocument);
+            newFilesProcessed++; // Increment only if the file is new and processed
 
         } catch (error) {
             console.error(`Error processing file ${file.originalname}:`, error);
@@ -141,7 +155,7 @@ app.post('/upload', upload.array('files'), async (req, res) => {
     }));
 
     res.status(200).send({
-        message: `${req.files.length} file(s) processed successfully!`,
+        message: `${newFilesProcessed} new file(s) processed successfully!`,
         files: currentLibrary
     });
 });
@@ -195,7 +209,7 @@ app.post('/chat', async (req, res) => {
 
     const libraryContent = Array.from(documentStore.values()).map(doc => `--- Document: ${doc.originalName} ---\n${doc.text}`).join('\n\n');
     const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${GEMINI_API_KEY}`;
-    const prompt = `Answer the user's "Question" based *only* on the "Document Library". Format your response as Markdown bullet points. If the answer isn't in the documents, say so.\n\nQuestion: "${query}"\n\nDocument Library:\n${libraryContent.substring(0, 30000)}`;
+    const prompt = `Answer the user's "Question" based *only* on the "Document Library". Format your response as Markdown bullet points. If the answer isn't in the documents, say so.\n\nQuestion: "${query}"\n\nDocument Library:\n${libraryContent}`;
 
     try {
         const payload = { contents: [{ parts: [{ text: prompt }] }] };
@@ -239,7 +253,7 @@ app.post('/generate-insights', async (req, res) => {
     const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
     if (!GEMINI_API_KEY) return res.status(500).json({ error: 'Gemini API key not configured.' });
     const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${GEMINI_API_KEY}`;
-    const prompt = `Based on the following text, provide a JSON object with four keys: "keyInsights", "didYouKnow", "contradictions", and "connections".\n\n- "keyInsights": A concise, one-sentence summary.\n- "didYouKnow": A surprising fact.\n- "contradictions": A potential counterpoint.\n- "connections": A broader connection.\n\nText:\n---\n${doc.text.substring(0, 15000)}\n---`;
+    const prompt = `Based on the following text, provide a JSON object with four keys: "keyInsights", "didYouKnow", "contradictions", and "connections".\n\n- "keyInsights": A concise, four-sentence summary.\n- "didYouKnow": Two surprising fact.\n- "contradictions": Potential counterpoints not more than three.\n- "connections": A broader connection.\n\nText:\n---\n${doc.text.substring(0, 15000)}\n---`;
     try {
         const payload = { contents: [{ parts: [{ text: prompt }] }], generationConfig: { responseMimeType: "application/json" } };
         const apiResponse = await fetch(API_URL, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
@@ -256,30 +270,69 @@ app.post('/generate-insights', async (req, res) => {
 app.post('/generate-podcast', async (req, res) => {
     const { text } = req.body;
     if (!text) return res.status(400).json({ error: 'Text is required.' });
-    const AZURE_TTS_KEY = process.env.AZURE_TTS_KEY;
-    const AZURE_TTS_ENDPOINT = process.env.AZURE_TTS_ENDPOINT;
-    if (!AZURE_TTS_KEY || !AZURE_TTS_ENDPOINT) return res.status(500).json({ error: 'TTS service not configured.' });
-    const region = AZURE_TTS_ENDPOINT.match(/(\w+)\.api/)[1];
-    const speechConfig = sdk.SpeechConfig.fromSubscription(AZURE_TTS_KEY, region);
-    speechConfig.speechSynthesisVoiceName = "en-US-JennyNeural";
-    const audioFileName = `podcast-${Date.now()}.wav`;
-    const audioFilePath = path.join(audioDir, audioFileName);
-    const audioConfig = sdk.AudioConfig.fromAudioFileOutput(audioFilePath);
-    const synthesizer = new sdk.SpeechSynthesizer(speechConfig, audioConfig);
-    synthesizer.speakTextAsync(text, result => {
-        synthesizer.close();
-        if (result.reason === sdk.ResultReason.SynthesizingAudioCompleted) {
-            const audioUrl = `${req.protocol}://${req.get('host')}/audio/${audioFileName}`;
-            res.json({ audioUrl });
-        } else {
-            console.error("Azure TTS Error:", result.errorDetails);
-            res.status(500).json({ error: 'Failed to synthesize audio.' });
+
+    const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
+    if (!GEMINI_API_KEY) return res.status(500).json({ error: 'Gemini API key not configured.' });
+
+    try {
+        // Step 1: Convert markdown insights to a clean, conversational script
+        const scriptApiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${GEMINI_API_KEY}`;
+        const scriptPrompt = `
+            You are a podcast script writer. Convert the following research summary, which is in markdown format, into a clean, conversational, plain-text script.
+            Remove all markdown formatting like asterisks for bolding, hashes for headers, and list item markers.
+            Rewrite the content to flow naturally as if a person were speaking it.
+
+            Markdown Research Summary:
+            ---
+            ${text}
+            ---
+
+            Your output must be plain text only.
+        `;
+
+        const scriptPayload = { contents: [{ parts: [{ text: scriptPrompt }] }] };
+        const scriptApiResponse = await fetch(scriptApiUrl, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(scriptPayload) });
+
+        if (!scriptApiResponse.ok) {
+            throw new Error(`Gemini API error for script generation: ${scriptApiResponse.statusText}`);
         }
-    }, err => {
-        synthesizer.close();
-        console.error("Azure TTS Stream Error:", err);
-        res.status(500).json({ error: 'TTS synthesis failed.' });
-    });
+
+        const scriptResult = await scriptApiResponse.json();
+        const script = scriptResult.candidates[0].content.parts[0].text.trim();
+
+        // Step 2: Convert the clean script to speech
+        const AZURE_TTS_KEY = process.env.AZURE_TTS_KEY;
+        const AZURE_TTS_ENDPOINT = process.env.AZURE_TTS_ENDPOINT;
+        if (!AZURE_TTS_KEY || !AZURE_TTS_ENDPOINT) return res.status(500).json({ error: 'TTS service not configured.' });
+
+        const region = AZURE_TTS_ENDPOINT.match(/(\w+)\.api/)[1];
+        const speechConfig = sdk.SpeechConfig.fromSubscription(AZURE_TTS_KEY, region);
+        speechConfig.speechSynthesisVoiceName = "en-US-JennyNeural"; // Matching the original function
+
+        const audioFileName = `podcast-${Date.now()}.wav`;
+        const audioFilePath = path.join(audioDir, audioFileName);
+        const audioConfig = sdk.AudioConfig.fromAudioFileOutput(audioFilePath);
+        const synthesizer = new sdk.SpeechSynthesizer(speechConfig, audioConfig);
+
+        synthesizer.speakTextAsync(script, result => { // Using the generated script here
+            synthesizer.close();
+            if (result.reason === sdk.ResultReason.SynthesizingAudioCompleted) {
+                const audioUrl = `${req.protocol}://${req.get('host')}/audio/${audioFileName}`;
+                res.json({ audioUrl });
+            } else {
+                console.error("Azure TTS Error:", result.errorDetails);
+                res.status(500).json({ error: 'Failed to synthesize audio.' });
+            }
+        }, err => {
+            synthesizer.close();
+            console.error("Azure TTS Stream Error:", err);
+            res.status(500).json({ error: 'TTS synthesis failed.' });
+        });
+
+    } catch (error) {
+        console.error("Error in /generate-podcast:", error);
+        res.status(500).json({ error: error.message || 'An unexpected error occurred during podcast generation.' });
+    }
 });
 
 app.post('/generate-quiz', async (req, res) => {
@@ -289,7 +342,7 @@ app.post('/generate-quiz', async (req, res) => {
     const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
     if (!GEMINI_API_KEY) return res.status(500).json({ error: 'Gemini API key not configured.' });
     const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${GEMINI_API_KEY}`;
-    const prompt = `Create a JSON array of 5 multiple-choice questions from the text below. Each object must have "question", "options" (an array of 4), and "correctAnswer" keys.\n\nText:\n---\n${doc.text.substring(0, 15000)}\n---`;
+    const prompt = `Create a JSON array of 5 multiple-choice questions from the text below. Each object must have "question", "options" (an array of 4), and "correctAnswer" keys.\n\nText:\n---\n${doc.text}\n---`;
     try {
         const payload = { contents: [{ parts: [{ text: prompt }] }], generationConfig: { responseMimeType: "application/json" } };
         const apiResponse = await fetch(API_URL, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
@@ -310,7 +363,7 @@ app.post('/generate-presentation', async (req, res) => {
     const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
     if (!GEMINI_API_KEY) return res.status(500).json({ error: 'Gemini API key not configured.' });
     const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${GEMINI_API_KEY}`;
-    const prompt = `Create a JSON object for a 5-slide presentation from the text below. The object must have a "slides" key, which is an array of 5 objects. Each object must have "title" and "content" (array of strings) keys.\n\nText:\n---\n${doc.text.substring(0, 15000)}\n---`;
+    const prompt = `Create a JSON object for a 5-slide presentation from the text below. The object must have a "slides" key, which is an array of 5 objects. Each object must have "title" and "content" (array of strings) keys.\n\nText:\n---\n${doc.text}\n---`;
     try {
         const payload = { contents: [{ parts: [{ text: prompt }] }], generationConfig: { responseMimeType: "application/json" } };
         const apiResponse = await fetch(API_URL, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
