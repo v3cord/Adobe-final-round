@@ -1,9 +1,0 @@
-docker run -e GEMINI_API_KEY="AIzaSyAhUpvUOu_MVxj85Nf5EEs4qSPsTOH0S-I" -e TTS_PROVIDER=azure -e AZURE_TTS_KEY=9awJrmxxlZDktOOxWauMI3yk0wwsu1mf8iQXdmKI08CAkeBO13PRJQQJ99BHACYeBjFXJ3w3AAAYACOGBAEH -e AZURE_TTS_ENDPOINT=https://eastus.api.cognitive.microsoft.com/ -p 8080:8080 pdf-reader-app
-
-docker run -v "D:/New folder/blackswan_pdf/creds:/credentials" -e ADOBE_EMBED_API_KEY=<ADOBE_EMBED_API_KEY> -e LLM_PROVIDER=gemini -e GOOGLE_APPLICATION_CREDENTIALS=/credentials/jarvo.json -e GEMINI_MODEL=gemini-2.5-flash -e TTS_PROVIDER=azure -e AZURE_TTS_KEY=<YOUR_AZURE_TTS_KEY> -e AZURE_TTS_ENDPOINT=<YOUR_AZURE_TTS_ENDPOINT> -p 8080:8080 pdf-reader-app
-
-<button className="tab-button" onClick={props.toggleFullScreen} data-tooltip="Full Screen">
-            <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                <path d="M8 3H5a2 2 0 0 0-2 2v3m18 0V5a2 2 0 0 0-2-2h-3m0 18h3a2 2 0 0 0 2-2v-3M3 16v3a2 2 0 0 0 2 2h3"></path>
-            </svg>
-          </button>
