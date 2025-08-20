@@ -19,7 +19,8 @@ In today’s age of **information overload**, professionals and researchers are 
 ### 📚 Core Document Handling  
 - **Bulk PDF Upload & Library** → Upload multiple PDFs into a **personal searchable library**.  
 - **High-Fidelity Viewer** → Smooth, responsive PDF viewer with **page navigation, scrolling, zoom in/out**.  
-- **Day/Night/Reading Mode** → Adjustable **blue light filter** for eye comfort.  
+- **Day/Night/Reading Mode** → Adjustable **blue light filter** for eye comfort.
+- **Fullscreen mode** → With minimal distracting icons
 
 ### 🤖 AI-Powered Analysis & Interaction  
 - **🔗 Connect the Dots** → Select text in one doc and instantly see up to **5 related snippets** across your library.  
@@ -117,3 +118,9 @@ Integration with cloud storage (Google Drive / OneDrive).
 Advanced note-taking & annotation system.
 
 AI-driven mind maps from documents.
+
+## 8. Special mention
+
+Docker file under 10GB
+
+Buffer memory to remember pdfs read in a seesion (until the server is restarted).
