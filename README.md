@@ -178,7 +178,7 @@ AI-driven mind maps from documents.
 
 Docker file size < 5GB
 
-Buffer memory to remember pdfs read in a seesion (until the server is restarted).
+Buffer memory to remember pdfs read in a session (until the server is restarted).
 
 
 ## 10. CONTRIBUTORS
