@@ -253,7 +253,7 @@ app.post('/generate-insights', async (req, res) => {
     const GEMINI_API_KEY = process.env.GEMINI_API_KEY;
     if (!GEMINI_API_KEY) return res.status(500).json({ error: 'Gemini API key not configured.' });
     const API_URL = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${GEMINI_API_KEY}`;
-    const prompt = `Based on the following text, provide a JSON object with four keys: "keyInsights", "didYouKnow", "contradictions", and "connections".\n\n- "keyInsights": A concise, four-sentence summary.\n- "didYouKnow": Two surprising fact.\n- "contradictions": Potential counterpoints not more than three.\n- "connections": A broader connection.\n\nText:\n---\n${doc.text.substring(0, 15000)}\n---`;
+    const prompt = `Based on the following text, provide a JSON object with four keys: "keyInsights", "didYouKnow", "contradictions", and "connections".\n\n- "keyInsights": A concise, five-sentence summary.\n- "didYouKnow": Two surprising fact.\n- "contradictions": Potential counterpoints not more than three.\n- "connections": A broader connection.\n\nText:\n---\n${doc.text.substring(0, 15000)}\n---`;
     try {
         const payload = { contents: [{ parts: [{ text: prompt }] }], generationConfig: { responseMimeType: "application/json" } };
         const apiResponse = await fetch(API_URL, { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify(payload) });
@@ -278,9 +278,9 @@ app.post('/generate-podcast', async (req, res) => {
         // Step 1: Convert markdown insights to a clean, conversational script
         const scriptApiUrl = `https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash-latest:generateContent?key=${GEMINI_API_KEY}`;
         const scriptPrompt = `
-            You are a podcast script writer. Convert the following research summary, which is in markdown format, into a clean, conversational, plain-text script.
+            You are an extremely good podcast script writer. Convert the following research summary, which is in markdown format, into a clean, conversational, plain-text script.
             Remove all markdown formatting like asterisks for bolding, hashes for headers, and list item markers.
-            Rewrite the content to flow naturally as if a person were speaking it.
+            Rewrite the content to flow naturally as if an excellent orator were speaking it.
 
             Markdown Research Summary:
             ---

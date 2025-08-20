@@ -918,8 +918,10 @@ function App() {
   // --- RENDER ---
   if (appState === 'landing') {
     return <LandingPage onStart={() => {
-      console.log("Get Started button was clicked!"); // <-- ADD IT HERE
-      setAppState('engine');
+      // Use setTimeout to fix the rendering delay
+      setTimeout(() => {
+        setAppState('engine');
+      }, 0); // A 0ms delay is all that's needed
     }} />;
   }
 
